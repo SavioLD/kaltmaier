@@ -160,6 +160,14 @@ gezeichnet, nicht eingefaerbt, Seitenverhaeltnis unberuehrt. Da der
 Schriftzug schwarz ist, sitzt es auf einer weissen Flaeche; daneben steht
 „Kaltmaier" als Text, genau wie auf Fahrzeugen und Gebaeude.
 
+**Hero-Darstellung:** Am Desktop liegt das Foto als Vollflaeche hinter dem
+Text. Mobil nicht – das Gebaeudefoto ist ein Querformat (3,4:1), davon waere
+auf einem Hochkant-Display nur ein rund 20 % breiter Streifen zu sehen.
+Mobil bekommt es deshalb ein eigenes Band von 320 px ganz oben im Hero und
+laeuft nach unten weich in den Textbereich aus. Die Abdunklung steckt
+komplett im Stylesheet; das JS setzt nur noch `--hero-photo`, weil ein
+inline gesetztes `background-image` jede Media-Query ueberschreiben wuerde.
+
 Optionale Ueberschreibungen (greifen automatisch, ohne Code-Aenderung):
 
 * `bilder/logo-kaltmaier-weiss.png` – fertiges Komplettlogo in Weiss,
