@@ -1,0 +1,36 @@
+BILDMATERIAL FÜR DIE KARRIERESEITE
+===================================
+
+Die Seite bindet Bilder automatisch ein, sobald sie unter genau diesen
+Dateinamen in diesem Ordner liegen. Es ist KEINE Code-Änderung nötig.
+
+
+1) LOGO  (wird in Topbar, Hero und Footer verwendet)
+----------------------------------------------------
+Bitte das ORIGINAL-Logo verwenden – es wird nicht nachgebaut, nicht neu
+gezeichnet und nicht eingefärbt.
+
+Die Seite sucht in dieser Reihenfolge:
+    bilder/logo-weiss.png
+    bilder/logo-weiss.svg
+    bilder/kaltmaier-logo-weiss.png
+    bilder/logo.png
+    bilder/logo.svg
+
+Die ersten gefundene Datei wird genommen. Weil Topbar, Hero und Footer
+dunkelblau sind, passt eine WEISSE bzw. negative Logo-Variante am besten.
+Solange keine Datei da ist, zeigt die Seite den Schriftzug „KALTMAIER“
+als Platzhalter.
+
+
+2) HERO-BILD  (grosses Bild im Seitenkopf)
+-------------------------------------------
+    bilder/hero.jpg      (oder hero.jpeg / hero.png)
+
+Empfehlung: Querformat, mindestens 1920 x 1080 px. Motiv mit Bezug zur
+Stelle – z. B. Projektleiter/Monteure auf der Baustelle, Badezimmer,
+Heizungsanlage, Betrieb. Wichtiges Motiv eher rechts platzieren, links
+liegt der dunkle Textbereich.
+
+Ohne Datei zeigt der Hero einen blauen Verlauf im Firmen-CI – das sieht
+ebenfalls sauber aus, ein echtes Foto wirkt aber deutlich stärker.
