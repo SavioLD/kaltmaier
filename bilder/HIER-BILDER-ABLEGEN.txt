@@ -1,36 +1,31 @@
-BILDMATERIAL FÜR DIE KARRIERESEITE
-===================================
+BILDMATERIAL DER KARRIERESEITE
+===============================
 
-Die Seite bindet Bilder automatisch ein, sobald sie unter genau diesen
-Dateinamen in diesem Ordner liegen. Es ist KEINE Code-Änderung nötig.
+AKTUELL EINGEBUNDEN
+-------------------
+buh_logo.png.webp
+    Original-Logo bad & heizung. Wird in Topbar, Hero und Footer
+    verwendet - unveraendert, auf weisser Flaeche (der Schriftzug ist
+    schwarz und braucht einen hellen Untergrund). Daneben steht
+    "Kaltmaier" als Text.
 
+csm_Kaltmaier_Metzingen-gebaeude_68f07057f5.jpg
+    Betriebsgebaeude Metzingen, dient als Hero-Hintergrund.
 
-1) LOGO  (wird in Topbar, Hero und Footer verwendet)
-----------------------------------------------------
-Bitte das ORIGINAL-Logo verwenden – es wird nicht nachgebaut, nicht neu
-gezeichnet und nicht eingefärbt.
-
-Die Seite sucht in dieser Reihenfolge:
-    bilder/logo-weiss.png
-    bilder/logo-weiss.svg
-    bilder/kaltmaier-logo-weiss.png
-    bilder/logo.png
-    bilder/logo.svg
-
-Die ersten gefundene Datei wird genommen. Weil Topbar, Hero und Footer
-dunkelblau sind, passt eine WEISSE bzw. negative Logo-Variante am besten.
-Solange keine Datei da ist, zeigt die Seite den Schriftzug „KALTMAIER“
-als Platzhalter.
+Vorschau_Muster_Kundendienstmonteur.jpg
+    Reserve. Mit 530 x 354 px zu klein fuer grossformatige Anzeigen.
 
 
-2) HERO-BILD  (grosses Bild im Seitenkopf)
--------------------------------------------
-    bilder/hero.jpg      (oder hero.jpeg / hero.png)
+OPTIONAL ERGAENZEN
+------------------
+Diese Dateien werden automatisch erkannt, sobald sie hier liegen -
+es ist KEINE Code-Aenderung noetig:
 
-Empfehlung: Querformat, mindestens 1920 x 1080 px. Motiv mit Bezug zur
-Stelle – z. B. Projektleiter/Monteure auf der Baustelle, Badezimmer,
-Heizungsanlage, Betrieb. Wichtiges Motiv eher rechts platzieren, links
-liegt der dunkle Textbereich.
+logo-kaltmaier-weiss.png   (oder .svg)
+    Fertiges Komplettlogo "bad & heizung Kaltmaier" in Weiss.
+    Ersetzt dann die Kombination aus Logo-Badge und Schriftzug.
 
-Ohne Datei zeigt der Hero einen blauen Verlauf im Firmen-CI – das sieht
-ebenfalls sauber aus, ein echtes Foto wirkt aber deutlich stärker.
+hero.jpg                   (oder .jpeg / .png)
+    Eigenes Hero-Bild, hat Vorrang vor dem Gebaeudefoto.
+    Empfehlung: Querformat ab 1920 x 1080 px. Wichtiges Motiv eher
+    rechts platzieren - links liegt der dunkle Textbereich.

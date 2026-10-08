@@ -130,11 +130,15 @@ oben in `index.html`. Wer dort ändert, ändert die ganze Seite.
 
 | Variable | Wert | Rolle |
 |----------|------|-------|
-| `--brand-900` | `#0c2b47` | dunkles Firmenblau: Topbar, Hero, Mid-CTA, Footer |
-| `--brand-700` | `#00558f` | mittleres Blau: Kicker, Icons, Links, Tags |
-| `--brand` | `#f39200` | Signal-Orange: Buttons, Fortschritt, Auswahl |
-| `--f-display` | `Barlow` | Überschriften |
-| `--f-body` | `Inter` | Fließtext |
+| `--brand-900` | `#00315c` | dunkles Firmenblau: Topbar, Hero, Mid-CTA, Footer |
+| `--brand-700` | `#004d91` | **Original-Blau aus dem Logo**: Kicker, Icons, Links, Tags |
+| `--brand-pure` | `#008c8d` | **Original-Teal aus dem Logo**: Fortschritt, Rahmen, Punkte |
+| `--brand` | `#00787a` | Logo-Teal, fuer Flaechen mit Text minimal abgedunkelt (Weiss darauf 5,3:1) |
+| `--f-display` / `--f-body` | `Source Sans 3` | Humanistische Grotesk, am naechsten am Logo-Schriftzug |
+
+`#008c8d` und `#004d91` sind direkt aus `bilder/buh_logo.png.webp`
+ausgelesen. Das reine Teal traegt nirgends Text; wo Text darauf steht
+(Buttons), kommt `--brand` zum Einsatz, damit der Kontrast AA erfuellt.
 
 Firmendaten (Adresse, Telefon, E-Mail, Rechts-Links) stehen gebündelt im
 `FIRMA`-Objekt im Script am Seitenende.
@@ -143,11 +147,21 @@ Firmendaten (Adresse, Telefon, E-Mail, Rechts-Links) stehen gebündelt im
 
 ## 6 · Bildmaterial
 
-Siehe `bilder/HIER-BILDER-ABLEGEN.txt`. Kurz:
+Im Repo liegen:
 
-* **Logo** → `bilder/logo-weiss.png` (oder `.svg` / `logo.png`)
-* **Hero-Bild** → `bilder/hero.jpg`
+| Datei | Verwendung |
+|-------|------------|
+| `bilder/buh_logo.png.webp` | Original-Logo, in Topbar, Hero und Footer eingebunden |
+| `bilder/csm_Kaltmaier_Metzingen-gebaeude_68f07057f5.jpg` | Hero-Hintergrund (Betriebsgebaeude Metzingen) |
+| `bilder/Vorschau_Muster_Kundendienstmonteur.jpg` | Reserve, 530 x 354 px |
 
-Beides wird automatisch eingebunden, sobald die Datei vorhanden ist –
-ohne Code-Änderung. Solange nichts da ist, greifen Schriftzug und
-Farbverlauf als Platzhalter.
+**Das Logo wird unveraendert verwendet** – nicht nachgebaut, nicht neu
+gezeichnet, nicht eingefaerbt, Seitenverhaeltnis unberuehrt. Da der
+Schriftzug schwarz ist, sitzt es auf einer weissen Flaeche; daneben steht
+„Kaltmaier" als Text, genau wie auf Fahrzeugen und Gebaeude.
+
+Optionale Ueberschreibungen (greifen automatisch, ohne Code-Aenderung):
+
+* `bilder/logo-kaltmaier-weiss.png` – fertiges Komplettlogo in Weiss,
+  ersetzt dann Logo-Badge + Schriftzug
+* `bilder/hero.jpg` – eigenes Hero-Bild, hat Vorrang vor dem Gebaeudefoto

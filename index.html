@@ -7,7 +7,7 @@
 <title>Karriere bei Bad &amp; Heizung Kaltmaier &middot; Projektleiter (m/w/d) in Metzingen</title>
 <meta name="description" content="Bad &amp; Heizung Kaltmaier GmbH in Metzingen sucht einen Projektleiter (m/w/d) im Bereich Sanitaer-, Heizungs- und Klimatechnik. Firmenwagen mit privater Nutzung, 30 Tage Urlaub, unbefristet. Jetzt in unter 60 Sekunden bewerben - ohne Lebenslauf." />
 <meta name="robots" content="index, follow, max-image-preview:large" />
-<meta name="theme-color" content="#0c2b47" />
+<meta name="theme-color" content="#00315c" />
 <meta name="geo.region" content="DE-BW" />
 <meta name="geo.placename" content="Metzingen" />
 
@@ -22,7 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
 <!-- Structured Data: JobPosting - wird aus der JOB-Config am Seitenende erzeugt -->
 
@@ -33,34 +33,36 @@
    :root-Block. Wer das CI anpassen will, aendert NUR hier - die ganze
    Seite zieht automatisch nach.
 
-   Farbrollen:
+   Farbrollen (direkt aus dem Original-Logo ausgelesen):
      --brand-900  dunkles Firmenblau   -> Topbar, Hero, Mid-CTA, Footer
-     --brand-700  mittleres Blau       -> Kicker, Icons, Links, Tags
-     --brand      Signal-Orange        -> Buttons, Fortschritt, Auswahl
+     --brand-700  #004D91 Logo-Blau    -> Kicker, Icons, Links, Tags
+     --brand-pure #008C8D Logo-Teal    -> Fortschritt, Rahmen, Punkte
+     --brand      Logo-Teal, fuer Flaechen mit Text minimal abgedunkelt
    ===================================================================== */
 :root{
   --bg:#ffffff;
-  --bg-soft:#f4f8fb;
-  --panel-2:#e3edf5;
-  --line:rgba(12,43,71,.12);
-  --line-strong:rgba(12,43,71,.24);
-  --ink:#152636;
-  --ink-soft:#49596a;
-  --ink-mute:#78889a;
+  --bg-soft:#f3f7fa;
+  --panel-2:#dfeaf3;
+  --line:rgba(0,49,92,.12);
+  --line-strong:rgba(0,49,92,.24);
+  --ink:#152433;
+  --ink-soft:#47576a;
+  --ink-mute:#74869a;
 
-  --brand:#f39200;             /* Waerme / Handlung */
-  --brand-dark:#d97e00;
-  --brand-700:#00558f;         /* Wasser / Technik - auf Weiss lesbar */
-  --brand-900:#0c2b47;         /* dunkles Firmenblau */
-  --brand-soft:#e7f1fa;        /* helles Blau: Icon-Chips, Tags */
-  --sel-soft:#fff3e0;          /* helles Orange: ausgewaehlte Antwort */
-  --on-brand:#0c2b47;          /* Textfarbe auf Orange (Kontrast 7:1) */
+  --brand:#00787a;             /* Logo-Teal, leicht abgedunkelt: Weiss darauf 5.3:1 */
+  --brand-pure:#008c8d;        /* Original-Teal aus dem Logo (Flaechen ohne Text) */
+  --brand-dark:#00605f;        /* Hover */
+  --brand-700:#004d91;         /* Original-Blau aus dem Logo */
+  --brand-900:#00315c;         /* dunkles Firmenblau */
+  --brand-soft:#e4eef7;        /* helles Blau: Icon-Chips, Tags */
+  --sel-soft:#e0f0f0;          /* helles Teal: ausgewaehlte Antwort */
+  --on-brand:#ffffff;          /* Textfarbe auf Teal */
 
-  --grad:linear-gradient(125deg,#08203a 0%,#0c2b47 46%,#17507f 100%);
-  --f-display:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --grad:linear-gradient(125deg,#002440 0%,#00315c 46%,#004d91 100%);
+  --f-display:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
   --radius:16px;
-  --shadow:0 18px 50px rgba(12,43,71,.16);
+  --shadow:0 18px 50px rgba(0,49,92,.16);
 
   /* Feste Mindesthoehe des Formular-Inhalts - verhindert Springen beim
      Schrittwechsel. Wird in der Mobile-Query NICHT aufgehoben! */
@@ -71,27 +73,29 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--f-body);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 ::selection{background:var(--brand);color:var(--on-brand)}
-button,a,label,input{-webkit-tap-highlight-color:rgba(243,146,0,.26)}
+button,a,label,input{-webkit-tap-highlight-color:rgba(0,140,141,.22)}
 .shell{max-width:1160px;margin:0 auto;padding:0 24px}
 h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:1.15;letter-spacing:-.015em;color:var(--brand-900)}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 
 /* ---------- topbar ---------- */
-.topbar{position:fixed;inset:0 0 auto 0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(12,43,71,.93);border-bottom:1px solid rgba(255,255,255,.14)}
+.topbar{position:fixed;inset:0 0 auto 0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(0,49,92,.94);border-bottom:1px solid rgba(255,255,255,.14)}
 .topbar__inner{display:flex;align-items:center;justify-content:space-between;height:64px}
 .brand{display:flex;align-items:center}
-.brand__logo{display:none;height:42px;width:auto}
-.brand__fallback{display:flex;flex-direction:column;line-height:1.02}
-.brand__name{font-family:var(--f-display);font-weight:900;font-size:23px;letter-spacing:.02em;color:#fff}
-.brand__name em{font-style:normal;color:var(--brand)}
-.brand__sub{font-weight:800;font-size:7.5px;letter-spacing:.13em;text-transform:uppercase;color:#b9c7d4}
+/* Komplettlogo (optional, wird per JS gesucht) */
+.brand__alt{display:none;height:42px;width:auto}
+/* Original bad&heizung-Logo auf weisser Flaeche - das Logo selbst bleibt
+   unveraendert, es bekommt nur den hellen Untergrund, den es braucht. */
+.brand__lockup{display:flex;align-items:center;gap:11px}
+.brand__logo{height:38px;width:auto;background:#fff;border-radius:7px;padding:5px 8px}
+.brand__name{font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:.005em;color:#fff;line-height:1}
 .topbar__nav{display:flex;align-items:center;gap:26px;font-size:15px;font-weight:700;color:#ccd7e2}
 .topbar__nav a:hover{color:var(--brand)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--f-display);font-weight:800;font-size:16px;padding:14px 28px;border-radius:10px;border:none;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,background .18s ease;white-space:nowrap}
 .btn svg{width:18px;height:18px;stroke:currentColor;flex:0 0 auto}
-.btn--primary{background:var(--brand);color:var(--on-brand);box-shadow:0 8px 24px rgba(243,146,0,.36)}
-.btn--primary:hover{background:var(--brand-dark);transform:translateY(-2px);box-shadow:0 14px 32px rgba(243,146,0,.44)}
+.btn--primary{background:var(--brand);color:var(--on-brand);box-shadow:0 8px 24px rgba(0,120,122,.32)}
+.btn--primary:hover{background:var(--brand-dark);transform:translateY(-2px);box-shadow:0 14px 32px rgba(0,120,122,.42)}
 .btn--ghost{background:#fff;color:var(--brand-900);border:1.5px solid var(--line-strong)}
 .btn--ghost:hover{border-color:var(--brand);color:var(--brand-700)}
 .btn--sm{padding:10px 20px;font-size:14.5px}
@@ -100,23 +104,24 @@ img{max-width:100%;display:block}
 
 /* ---------- HERO ---------- */
 .hero{position:relative;overflow:hidden;background:var(--brand-900);padding:0}
-.hero__media{position:absolute;inset:0;background-color:#08203a;background-image:var(--grad);background-size:cover;background-position:center}
-.hero__media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,32,58,.45),transparent 60%)}
+.hero__media{position:absolute;inset:0;background-color:#002440;background-image:var(--grad);background-size:cover;background-position:center}
+.hero__media.has-photo{background-position:62% center}
+@media(max-width:820px){.hero__media.has-photo{background-position:58% center;background-image:linear-gradient(180deg,rgba(0,36,64,.88),rgba(0,49,92,.80)),var(--hero-photo)}}
+.hero__media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,36,64,.45),transparent 60%)}
 /* Eigener Stacking-Kontext: sonst ueberdeckt .hero__media den Abdunkler
    hinter dem Text (z-index:-1) und der Kontrast bricht ein. */
 .hero .shell{position:relative;z-index:1}
 .hero__inner{position:relative;display:flex;min-height:580px}
 .hero__panel{position:relative;flex:0 0 56%;max-width:660px;display:flex;flex-direction:column;justify-content:center;padding:150px 48px 56px;color:#fff}
-.hero__panel>*{text-shadow:0 1px 14px rgba(6,20,36,.5)}
+.hero__panel>*{text-shadow:0 1px 14px rgba(0,20,36,.5)}
 .hero__cta .btn{text-shadow:none}
-.hero__panel::before{content:"";position:absolute;inset:0 auto 0 -100vw;width:calc(100vw + 62%);background:linear-gradient(112deg,rgba(8,32,58,.97) 0%,rgba(12,43,71,.93) 46%,rgba(23,80,127,.55) 100%);z-index:-1;border-radius:0 62% 62% 0 / 0 50% 50% 0;box-shadow:0 30px 80px rgba(8,32,58,.35)}
-.hero__logo{margin-bottom:26px}
-.hero__logo img{display:none;height:88px;width:auto}
-.hero__logo .brand__fallback b{font-family:var(--f-display);font-weight:900;font-size:34px;letter-spacing:.02em;color:#fff;line-height:1}
-.hero__logo .brand__fallback b em{font-style:normal;color:var(--brand)}
-.hero__logo .brand__fallback span{display:block;font-size:9.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#cbd8e4;margin-top:5px}
-.hero__eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#ffcf8f;margin-bottom:16px}
-.hero__eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px rgba(243,146,0,.30)}
+.hero__panel::before{content:"";position:absolute;inset:0 auto 0 -100vw;width:calc(100vw + 62%);background:linear-gradient(112deg,rgba(0,36,64,.97) 0%,rgba(0,49,92,.93) 46%,rgba(0,77,145,.52) 100%);z-index:-1;border-radius:0 62% 62% 0 / 0 50% 50% 0;box-shadow:0 30px 80px rgba(0,36,64,.35)}
+.hero__logo{margin-bottom:26px;display:flex;align-items:center;gap:16px}
+.hero__logo .brand__alt{display:none;height:84px;width:auto}
+.hero__logo img.brand__logo{height:56px;width:auto;background:#fff;border-radius:10px;padding:8px 12px}
+.hero__logo b{font-family:var(--f-display);font-weight:800;font-size:34px;letter-spacing:.005em;color:#fff;line-height:1}
+.hero__eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#8fd9d9;margin-bottom:16px}
+.hero__eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--brand-pure);box-shadow:0 0 0 4px rgba(0,140,141,.28)}
 .hero h1{color:#fff;font-size:clamp(30px,4.4vw,50px);font-weight:900;line-height:1.08}
 .hero__sub{margin-top:14px;font-size:18px;font-weight:500;color:#e2e9f0;max-width:470px}
 .hero__cta{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap}
@@ -126,8 +131,8 @@ img{max-width:100%;display:block}
 @media(max-width:820px){
   .hero__inner{min-height:0}
   .hero__panel{flex:1 1 100%;max-width:none;padding:100px 22px 46px}
-  .hero__panel::before{inset:0 -18px;width:auto;border-radius:0;background:linear-gradient(180deg,rgba(8,32,58,.82) 0%,rgba(12,43,71,.90) 100%)}
-  .hero__media::after{background:linear-gradient(180deg,rgba(8,32,58,.2),rgba(8,32,58,.55))}
+  .hero__panel::before{inset:0 -18px;width:auto;border-radius:0;background:linear-gradient(180deg,rgba(0,36,64,.84) 0%,rgba(0,49,92,.92) 100%)}
+  .hero__media::after{background:linear-gradient(180deg,rgba(0,36,64,.2),rgba(0,36,64,.55))}
 }
 
 /* ---------- trust band ---------- */
@@ -162,7 +167,7 @@ section[id]{scroll-margin-top:80px}
 .job ul+h4{margin-top:2px}
 .job ul{list-style:none;display:grid;gap:9px;margin-bottom:22px;font-size:14.5px;color:var(--ink-soft);font-weight:450}
 .job ul li{display:flex;gap:9px}
-.job ul li::before{content:"";flex:0 0 6px;height:6px;border-radius:50%;background:var(--brand);margin-top:8px}
+.job ul li::before{content:"";flex:0 0 6px;height:6px;border-radius:50%;background:var(--brand-pure);margin-top:8px}
 .job ul.job__must li{font-weight:650;color:var(--ink)}
 .job ul.job__must li::before{background:var(--brand-900)}
 .job__split{display:grid;grid-template-columns:1fr 1fr;gap:10px 30px}
@@ -206,7 +211,7 @@ section[id]{scroll-margin-top:80px}
 .apply__contact a{color:var(--brand-700);text-decoration:underline;white-space:nowrap;font-weight:700}
 .form-card__head{padding:24px 32px 0}
 .progress{height:6px;background:var(--panel-2);border-radius:999px;overflow:hidden}
-.progress__bar{height:100%;width:16.6%;background:var(--brand);border-radius:999px;transition:width .35s ease}
+.progress__bar{height:100%;width:16.6%;background:var(--brand-pure);border-radius:999px;transition:width .35s ease}
 .progress__label{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-mute);margin-top:10px;font-weight:700}
 
 /* Feste Mindesthoehe: der Container ist ueber alle Schritte gleich hoch,
@@ -222,7 +227,7 @@ section[id]{scroll-margin-top:80px}
 .fstep .hint b{font-weight:800;color:var(--brand-700)}
 .fstep .hint b.is-optional{color:var(--ink-mute)}
 .choice-grid{display:grid;gap:10px}
-.choice{position:relative;display:flex;align-items:center;gap:13px;background:#fff;border:1.5px solid var(--line-strong);border-radius:10px;padding:14px 15px;cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .15s ease;font-size:15.5px;font-weight:650;color:var(--ink);box-shadow:0 1px 3px rgba(12,43,71,.05);line-height:1.3}
+.choice{position:relative;display:flex;align-items:center;gap:13px;background:#fff;border:1.5px solid var(--line-strong);border-radius:10px;padding:14px 15px;cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .15s ease;font-size:15.5px;font-weight:650;color:var(--ink);box-shadow:0 1px 3px rgba(0,49,92,.05);line-height:1.3}
 .choice:hover{border-color:var(--brand);transform:translateY(-1px)}
 .choice input{position:absolute;opacity:0;pointer-events:none}
 .choice .key{flex:0 0 28px;height:28px;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:13px;background:var(--brand-900);border-radius:6px;color:#fff}
@@ -233,7 +238,7 @@ section[id]{scroll-margin-top:80px}
 .field label{display:block;font-size:13.5px;font-weight:700;margin-bottom:6px;color:var(--brand-900)}
 .field input{width:100%;padding:13px 15px;font-size:16px;font-family:var(--f-body);font-weight:450;background:#fff;border:1.5px solid var(--line-strong);border-radius:10px;color:var(--ink);outline:none;transition:border-color .15s ease,box-shadow .15s ease}
 .field input::placeholder{color:var(--ink-mute);font-weight:400}
-.field input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(243,146,0,.26)}
+.field input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,140,141,.22)}
 .field input.is-invalid{border-color:#d84444}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .consent{font-size:12px;color:var(--ink-soft);font-weight:450;margin:8px 0 2px;line-height:1.5}
@@ -265,10 +270,9 @@ section[id]{scroll-margin-top:80px}
 /* ---------- footer ---------- */
 footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
 .footer__grid{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap}
-.footer__brand img{display:none;height:66px;width:auto;margin-bottom:6px}
-.footer__brand b{font-family:var(--f-display);font-weight:900;font-size:25px;letter-spacing:.02em;color:#fff}
-.footer__brand b em{font-style:normal;color:var(--brand)}
-.footer__brand .brand__sub{color:#9fb1c3;font-size:9px;margin-top:3px}
+.footer__brand .brand__alt{display:none;height:60px;width:auto;margin-bottom:10px}
+.footer__brand img.brand__logo{height:46px;width:auto;background:#fff;border-radius:8px;padding:6px 10px;margin-bottom:10px}
+.footer__brand b{display:block;font-family:var(--f-display);font-weight:800;font-size:24px;letter-spacing:.005em;color:#fff}
 .footer__col p{font-size:14px;color:#9fb1c3;margin-top:12px;max-width:340px;font-weight:450}
 .footer__col b{font-family:var(--f-display);font-weight:800;font-size:15px;color:#fff}
 .footer__col ul{list-style:none;margin-top:12px;display:grid;gap:8px;font-size:14px;color:#9fb1c3;font-weight:450}
@@ -295,11 +299,12 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
   .shell{padding:0 18px}
   section{padding:52px 0}
   .topbar__inner{height:58px}
-  .brand__logo{height:34px}
+  .brand__logo{height:32px;padding:4px 7px}
   .brand__name{font-size:19px}
-  .topbar .brand__sub{display:none}
-  .hero__logo img{height:64px}
-  .hero__logo .brand__fallback b{font-size:27px}
+  .brand__lockup{gap:9px}
+  .hero__logo{gap:12px;margin-bottom:20px}
+  .hero__logo img.brand__logo{height:44px;padding:6px 9px}
+  .hero__logo b{font-size:27px}
   .hero h1{font-size:29px}
   .hero__sub{font-size:16px}
   .hero__cta{flex-direction:column;align-items:stretch}
@@ -349,10 +354,10 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
 <header class="topbar">
   <div class="shell topbar__inner">
     <a href="#top" class="brand" aria-label="Bad &amp; Heizung Kaltmaier GmbH – Startseite">
-      <img class="brand__logo" id="logoHeader" alt="Bad &amp; Heizung Kaltmaier GmbH" />
-      <span class="brand__fallback">
-        <span class="brand__name">KALT<em>MAIER</em></span>
-        <span class="brand__sub">Bad &amp; Heizung · Metzingen</span>
+      <img class="brand__alt" id="logoHeader" alt="bad &amp; heizung Kaltmaier" />
+      <span class="brand__lockup">
+        <img class="brand__logo" src="bilder/buh_logo.png.webp" width="245" height="65" alt="bad &amp; heizung" />
+        <span class="brand__name">Kaltmaier</span>
       </span>
     </a>
     <nav class="topbar__nav" aria-label="Hauptnavigation">
@@ -376,8 +381,9 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
     <div class="hero__inner">
       <div class="hero__panel">
         <div class="hero__logo">
-          <img id="logoHero" alt="Bad &amp; Heizung Kaltmaier GmbH" />
-          <span class="brand__fallback"><b>KALT<em>MAIER</em></b><span>Bad &amp; Heizung · Metzingen</span></span>
+          <img class="brand__alt" id="logoHero" alt="bad &amp; heizung Kaltmaier" />
+          <img class="brand__logo" src="bilder/buh_logo.png.webp" width="245" height="65" alt="bad &amp; heizung" />
+          <b>Kaltmaier</b>
         </div>
         <span class="hero__eyebrow"><span class="dot"></span>Metzingen · Wir stellen ein</span>
         <h1 id="heroTitle">Projektleiter (m/w/d)<br />bei Bad &amp; Heizung Kaltmaier</h1>
@@ -615,8 +621,9 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
   <div class="shell">
     <div class="footer__grid">
       <div class="footer__col footer__brand">
-        <img id="logoFooter" alt="Bad &amp; Heizung Kaltmaier GmbH" />
-        <b>KALT<em>MAIER</em></b><span class="brand__sub" style="display:block;letter-spacing:.14em;text-transform:uppercase;font-weight:800">Bad &amp; Heizung · Metzingen</span>
+        <img class="brand__alt" id="logoFooter" alt="bad &amp; heizung Kaltmaier" />
+        <img class="brand__logo" src="bilder/buh_logo.png.webp" width="245" height="65" alt="bad &amp; heizung" />
+        <b>Kaltmaier</b>
         <p>Bad &amp; Heizung Kaltmaier GmbH · Komplette Bäder und moderne, umweltbewusste Heiztechnik – für private, gewerbliche und kommunale Bauherren.</p>
       </div>
       <div class="footer__col">
@@ -797,42 +804,51 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
 
   /* ---------------------------------------------------------------------
      LOGO
-     Das Original-Logo wird NICHT nachgebaut. Sobald eine Logodatei unter
-     bilder/ liegt, wird sie automatisch verwendet und der Text-Schriftzug
-     ausgeblendet. Bis dahin greift der Schriftzug als Platzhalter.
+     Es wird das ORIGINAL-Logo verwendet, unveraendert: nicht nachgebaut,
+     nicht neu gezeichnet, nicht eingefaerbt, Seitenverhaeltnis unberuehrt.
+     Weil der Schriftzug schwarz ist, sitzt es auf einer weissen Flaeche.
+
+     Liegt spaeter einmal ein fertiges Komplettlogo (bad&heizung + Kaltmaier,
+     weisse Variante) unter bilder/, ersetzt es die Kombination automatisch.
      --------------------------------------------------------------------- */
-  function loadLogo(img, candidates){
-    if (!img) return;
-    var i=0;
+  function loadLogo(alt){
+    if (!alt) return;
+    var cands=["bilder/logo-kaltmaier-weiss.png","bilder/logo-kaltmaier-weiss.svg","bilder/logo-weiss.png","bilder/logo-weiss.svg"], i=0;
     (function tryNext(){
-      if (i>=candidates.length) return;
-      var url=candidates[i++];
-      var probe=new Image();
+      if (i>=cands.length) return;
+      var url=cands[i++], probe=new Image();
       probe.onload=function(){
-        img.src=url; img.style.display="block";
-        var fb=img.parentNode.querySelector(".brand__fallback"); if(fb) fb.style.display="none";
-        if (img.id==="logoFooter"){
-          var b=img.parentNode.querySelector("b"); if(b){ b.style.display="none";
-            var s=b.nextElementSibling; if(s) s.style.display="none"; }
-        }
+        alt.src=url; alt.style.display="block";
+        var box=alt.parentNode;
+        var lock=box.querySelector(".brand__lockup"); if(lock) lock.style.display="none";
+        var mark=box.querySelector("img.brand__logo"); if(mark) mark.style.display="none";
+        var nm=box.querySelector("b"); if(nm) nm.style.display="none";
       };
       probe.onerror=tryNext;
       probe.src=url;
     })();
   }
-  var LOGOS=["bilder/logo-weiss.png","bilder/logo-weiss.svg","bilder/kaltmaier-logo-weiss.png","bilder/logo.png","bilder/logo.svg"];
-  loadLogo(document.getElementById("logoHeader"), LOGOS);
-  loadLogo(document.getElementById("logoHero"),   LOGOS);
-  loadLogo(document.getElementById("logoFooter"), LOGOS);
+  loadLogo(document.getElementById("logoHeader"));
+  loadLogo(document.getElementById("logoHero"));
+  loadLogo(document.getElementById("logoFooter"));
 
-  /* Hero-Bild: sobald bilder/hero.jpg existiert, wird es eingeblendet. */
+  /* ---------------------------------------------------------------------
+     HERO-BILD
+     Betriebsgebaeude in Metzingen. Liegt eine eigene bilder/hero.jpg vor,
+     hat sie Vorrang.
+     --------------------------------------------------------------------- */
   (function(){
     var el=document.getElementById("heroMedia");
-    var cands=["bilder/hero.jpg","bilder/hero.jpeg","bilder/hero.png"], i=0;
+    var cands=["bilder/hero.jpg","bilder/hero.jpeg","bilder/hero.png",
+               "bilder/csm_Kaltmaier_Metzingen-gebaeude_68f07057f5.jpg"], i=0;
     (function tryNext(){
       if (i>=cands.length) return;
       var url=cands[i++], probe=new Image();
-      probe.onload=function(){ el.style.backgroundImage="linear-gradient(125deg,rgba(8,32,58,.72),rgba(12,43,71,.45)),url('"+url+"')"; };
+      probe.onload=function(){
+        el.style.setProperty("--hero-photo","url('"+url+"')");
+        el.style.backgroundImage="linear-gradient(100deg,rgba(0,36,64,.94) 0%,rgba(0,36,64,.87) 50%,rgba(0,49,92,.30) 86%),url('"+url+"')";
+        el.classList.add("has-photo");
+      };
       probe.onerror=tryNext;
       probe.src=url;
     })();
