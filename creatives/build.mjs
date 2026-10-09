@@ -52,7 +52,11 @@ h1 .ak{color:${C.teal};-webkit-text-fill-color:${C.teal}}
   padding:calc(var(--u)*.56) calc(var(--u)*1.12);font-weight:700;font-size:calc(var(--u)*1.28)}
 .chip.on{background:${C.teal};border-color:${C.teal}}
 .media{position:relative;width:100%;overflow:hidden;border-radius:calc(var(--u)*1.1);
-  background:#0a2b47;flex:0 0 var(--media);margin-top:auto}
+  background:#0a2b47;
+  /* --media ist die Basishoehe; uebriger Platz geht ins Bild statt als
+     Leerraum nach unten. Das Inline-margin-Shorthand der Konzepte wuerde
+     ein margin-top:auto ohnehin ueberschreiben. */
+  flex:1 1 var(--media);min-height:150px}
 .media img{width:100%;height:100%;object-fit:cover;display:block}
 .media::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(0,36,64,.08) 40%,rgba(0,36,64,.72) 100%)}
@@ -173,8 +177,13 @@ const rawPage = (inner)=>`<!doctype html><html lang="de"><head><meta charset="ut
 <style>${BASE}</style></head><body>${inner}</body></html>`;
 
 const FORMATE = [
+  /* Feed quadratisch - klassische Feed-Platzierung */
+  { key:'1x1',  w:1080, h:1080, u:19, pad:50, h1:80,  media:196,
+    stackTop:26, stackGap:21, mediaTop:26, mediaBot:22 },
+  /* Feed hoch - nimmt im Feed mehr Flaeche ein, Metas Empfehlung */
   { key:'4x5',  w:1080, h:1350, u:20, pad:54, h1:98,  media:300,
     stackTop:40, stackGap:26, mediaTop:38, mediaBot:32 },
+  /* Story / Reels */
   { key:'9x16', w:1080, h:1920, u:22, pad:60, h1:124, media:700,
     stackTop:70, stackGap:33, mediaTop:48, mediaBot:40 }
 ];
