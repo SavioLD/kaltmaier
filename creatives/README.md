@@ -17,11 +17,16 @@ Jedes Konzept liegt in drei Formaten vor:
 | `-4x5` | 1080 x 1350 | Feed, hoch (nimmt mehr Flaeche ein) |
 | `-9x16` | 1080 x 1920 | Story / Reels |
 
-| Konzept | Dateien | Ansatz |
-|---------|---------|--------|
-| `benefit-*` | 1x1 / 4x5 / 9x16 | Benefit voran – „Firmenwagen. Auch privat." |
-| `beruf-*` | 1x1 / 4x5 / 9x16 | Berufsbild direkt – „Meister, Techniker oder Ingenieur SHK?" |
-| `wechsel-*` | 1x1 / 4x5 / 9x16 | Problem/Loesung – „Immer nur montieren? Du kannst mehr." |
+In allen Creatives ist **„Projektleiter (m/w/d)" das groesste Element**.
+Der jeweilige Werbe-Winkel steht als zweite, kleinere Zeile in Teal
+darunter. So ist beim Scrollen sofort klar, welche Stelle beworben wird,
+und die drei Varianten bleiben trotzdem unterscheidbar.
+
+| Konzept | Zweite Zeile | Ansatz |
+|---------|--------------|--------|
+| `benefit-*` | „Firmenwagen – auch privat." | Benefit voran |
+| `beruf-*` | „Fuehr deine eigenen Projekte." | Berufsbild direkt |
+| `wechsel-*` | „Statt immer nur montieren." | Problem/Loesung |
 
 ## Facebook
 
@@ -38,8 +43,8 @@ Jedes Konzept liegt in drei Formaten vor:
   einen weissen Hintergrund mit; auf dunklen Flaechen sitzt es deshalb auf
   einer weissen Karte, auf dem Profilbild auf reinweissem Grund.
 * Farben exakt aus dem Logo: Teal `#008C8D`, Blau `#004D91`.
-* `build.mjs` prueft beim Rendern, ob der Inhalt in die Flaeche passt, und
-  meldet jeden Ueberlauf.
+* `build.mjs` prueft beim Rendern zweierlei und meldet beides: ob der
+  Inhalt in die Flaeche passt, und ob der Stellentitel einzeilig bleibt.
 * Das Bild nimmt uebrigen Platz auf (`flex:1 1 var(--media)`). Dadurch sitzt
   der Abschluss in jedem Format und bei jeder Headline-Laenge gleich tief,
   statt dass unten Leerraum entsteht.

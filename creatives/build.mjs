@@ -44,8 +44,15 @@ body{font-family:"Source Sans 3",system-ui,sans-serif;-webkit-font-smoothing:ant
   font-size:calc(var(--u)*1.18);letter-spacing:.14em;text-transform:uppercase;color:#9fdada}
 .eyebrow i{width:calc(var(--u)*.72);height:calc(var(--u)*.72);border-radius:50%;background:${C.teal};
   box-shadow:0 0 0 calc(var(--u)*.3) rgba(0,140,141,.32)}
-h1{font-weight:900;letter-spacing:-.028em;line-height:.99;font-size:var(--h1)}
+/* Der Stellentitel ist das groesste Element der Flaeche. Der jeweilige
+   Werbe-Winkel steht als zweite, kleinere Zeile darunter - so ist auf
+   einen Blick klar, welche Stelle beworben wird. */
+h1{font-weight:900;letter-spacing:-.03em;line-height:.98;font-size:var(--h1)}
+h1 .mwd{font-size:.44em;font-weight:800;letter-spacing:-.01em}
 h1 .ak{color:${C.teal};-webkit-text-fill-color:${C.teal}}
+.title{display:flex;flex-direction:column;gap:calc(var(--u)*.55)}
+.jobline{font-family:var(--f-display);font-weight:900;color:${C.teal};
+  font-size:calc(var(--h1)*.50);line-height:1.03;letter-spacing:-.022em}
 .sub{font-weight:500;font-size:calc(var(--u)*1.72);line-height:1.34;color:#d2e2ee}
 .chips{display:flex;flex-wrap:wrap;gap:calc(var(--u)*.62)}
 .chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);border-radius:999px;
@@ -84,9 +91,12 @@ const KONZEPTE = {
   'benefit': ({u,pad,gap}) => `
     ${logoHead}
     <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
-      <span class="eyebrow"><i></i>Metzingen &middot; Projektleiter (m/w/d)</span>
-      <h1>Firmenwagen.<br><span class="ak">Auch privat.</span></h1>
-      <p class="sub">Dazu Firmenhandy, Firmentablet und 30&nbsp;Tage Urlaub.<br>Wir suchen einen Projektleiter f&uuml;r Bad und Heizung.</p>
+      <span class="eyebrow"><i></i>Metzingen &middot; Wir stellen ein</span>
+      <div class="title">
+        <h1>Projektleiter <span class="mwd">(m/w/d)</span></h1>
+        <div class="jobline">Firmenwagen &ndash; auch privat.</div>
+      </div>
+      <p class="sub">Dazu Firmenhandy, Firmentablet und 30&nbsp;Tage Urlaub &ndash; bei einem Fachbetrieb f&uuml;r Bad und Heizung.</p>
       <div class="chips">
         <span class="chip on">30 Tage Urlaub</span>
         <span class="chip">Unbefristet</span>
@@ -101,11 +111,14 @@ const KONZEPTE = {
   'beruf': ({u,pad,gap}) => `
     ${logoHead}
     <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
-      <span class="eyebrow"><i></i>Wir stellen ein</span>
-      <h1>Meister,<br>Techniker oder<br><span class="ak">Ingenieur SHK?</span></h1>
-      <p class="sub">Dann f&uuml;hr bei uns deine eigenen Projekte &ndash; von der Planung bis zur &Uuml;bergabe.</p>
+      <span class="eyebrow"><i></i>Meister &middot; Techniker &middot; Ingenieur SHK</span>
+      <div class="title">
+        <h1>Projektleiter <span class="mwd">(m/w/d)</span></h1>
+        <div class="jobline">F&uuml;hr deine eigenen Projekte.</div>
+      </div>
+      <p class="sub">Von der Planung bis zur &Uuml;bergabe: Du steuerst die Projekte, leitest die Monteure an und entscheidest selbst.</p>
       <div class="chips">
-        <span class="chip on">Projektleiter (m/w/d)</span>
+        <span class="chip on">Unbefristet</span>
         <span class="chip">Vollzeit</span>
         <span class="chip">Metzingen</span>
       </div>
@@ -119,7 +132,10 @@ const KONZEPTE = {
     ${logoHead}
     <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
       <span class="eyebrow"><i></i>Zeit f&uuml;r den n&auml;chsten Schritt</span>
-      <h1>Immer nur<br>montieren?<br><span class="ak">Du kannst mehr.</span></h1>
+      <div class="title">
+        <h1>Projektleiter <span class="mwd">(m/w/d)</span></h1>
+        <div class="jobline">Statt immer nur montieren.</div>
+      </div>
       <p class="sub">&Uuml;bernimm die Projektleitung, leite dein Team an und entscheide selbst &ndash; mit allem, was dazugeh&ouml;rt.</p>
       <div class="chips">
         <span class="chip on">Firmenwagen privat</span>
@@ -178,13 +194,13 @@ const rawPage = (inner)=>`<!doctype html><html lang="de"><head><meta charset="ut
 
 const FORMATE = [
   /* Feed quadratisch - klassische Feed-Platzierung */
-  { key:'1x1',  w:1080, h:1080, u:19, pad:50, h1:80,  media:196,
+  { key:'1x1',  w:1080, h:1080, u:19, pad:50, h1:92,  media:196,
     stackTop:26, stackGap:21, mediaTop:26, mediaBot:22 },
   /* Feed hoch - nimmt im Feed mehr Flaeche ein, Metas Empfehlung */
-  { key:'4x5',  w:1080, h:1350, u:20, pad:54, h1:98,  media:300,
+  { key:'4x5',  w:1080, h:1350, u:20, pad:54, h1:104, media:300,
     stackTop:40, stackGap:26, mediaTop:38, mediaBot:32 },
   /* Story / Reels */
-  { key:'9x16', w:1080, h:1920, u:22, pad:60, h1:124, media:700,
+  { key:'9x16', w:1080, h:1920, u:22, pad:60, h1:116, media:700,
     stackTop:70, stackGap:33, mediaTop:48, mediaBot:40 }
 ];
 
@@ -200,10 +216,13 @@ for (const [name, build] of Object.entries(KONZEPTE)){
     await p.evaluate(()=>document.fonts.ready);
     await p.waitForTimeout(400);
     const fit = await p.evaluate(()=>{
-      const c=document.querySelector('.canvas');
-      return { soll:c.clientHeight, ist:c.scrollHeight };
+      const c=document.querySelector('.canvas'), h=c.querySelector('h1');
+      const cs=getComputedStyle(h);
+      const zeilen=Math.round(h.getBoundingClientRect().height/parseFloat(cs.lineHeight));
+      return { soll:c.clientHeight, ist:c.scrollHeight, zeilen };
     });
     if (fit.ist > fit.soll) console.log(`  !! ${name}-${f.key}: Inhalt ${fit.ist}px > Flaeche ${fit.soll}px`);
+    if (fit.zeilen > 1)     console.log(`  !! ${name}-${f.key}: Stellentitel bricht auf ${fit.zeilen} Zeilen um`);
     const file = path.join(out, `${name}-${f.key}.png`);
     await p.locator('.canvas').screenshot({ path:file });
     made.push(file); await p.close();
