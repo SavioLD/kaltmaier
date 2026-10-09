@@ -25,7 +25,7 @@ und die drei Varianten bleiben trotzdem unterscheidbar.
 | Konzept | Zweite Zeile | Ansatz |
 |---------|--------------|--------|
 | `benefit-*` | „Firmenwagen – auch privat." | Benefit voran |
-| `beruf-*` | „Fuehr deine eigenen Projekte." | Berufsbild direkt |
+| `beruf-*` | „Fuehr deine eigenen Projekte." | Berufsbild direkt, mit hervorgehobenem Firmenwagen-Block |
 | `wechsel-*` | „Statt immer nur montieren." | Problem/Loesung |
 
 ## Facebook
@@ -43,8 +43,13 @@ und die drei Varianten bleiben trotzdem unterscheidbar.
   einen weissen Hintergrund mit; auf dunklen Flaechen sitzt es deshalb auf
   einer weissen Karte, auf dem Profilbild auf reinweissem Grund.
 * Farben exakt aus dem Logo: Teal `#008C8D`, Blau `#004D91`.
-* `build.mjs` prueft beim Rendern zweierlei und meldet beides: ob der
-  Inhalt in die Flaeche passt, und ob der Stellentitel einzeilig bleibt.
+* Der Firmenwagen ist in jedem Konzept vertreten: bei `benefit` als
+  zweite Headline-Zeile, bei `beruf` als eigener Benefit-Block mit Icon
+  (inklusive Firmenhandy und Firmentablet), bei `wechsel` als Chip.
+* `build.mjs` prueft beim Rendern dreierlei und meldet jeden Fall: ob der
+  Inhalt in die Flaeche passt, ob der Stellentitel einzeilig bleibt und ob
+  das Foto mindestens 240 px hoch ist. Letzteres faengt ab, dass das Bild
+  bei viel Text zu einem unleserlichen Streifen zusammenschrumpft.
 * Das Bild nimmt uebrigen Platz auf (`flex:1 1 var(--media)`). Dadurch sitzt
   der Abschluss in jedem Format und bei jeder Headline-Laenge gleich tief,
   statt dass unten Leerraum entsteht.

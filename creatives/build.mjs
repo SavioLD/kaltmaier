@@ -58,6 +58,19 @@ h1 .ak{color:${C.teal};-webkit-text-fill-color:${C.teal}}
 .chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);border-radius:999px;
   padding:calc(var(--u)*.56) calc(var(--u)*1.12);font-weight:700;font-size:calc(var(--u)*1.28)}
 .chip.on{background:${C.teal};border-color:${C.teal}}
+/* Hervorgehobener Benefit-Block: traegt den Firmenwagen samt dem, was
+   dazugehoert. Teal-getoent, damit er sich klar vom Fliesstext abhebt. */
+.perk{display:flex;align-items:center;gap:calc(var(--u)*.95);
+  background:rgba(0,140,141,.18);border:1px solid rgba(0,140,141,.55);
+  border-radius:calc(var(--u)*.9);padding:calc(var(--u)*.9) calc(var(--u)*1.15)}
+.perk__ic{flex:0 0 auto;width:calc(var(--u)*2.4);height:calc(var(--u)*2.4);border-radius:50%;
+  background:${C.teal};display:grid;place-items:center}
+.perk__ic svg{width:calc(var(--u)*1.35);height:calc(var(--u)*1.35);stroke:#fff;fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.perk b{display:block;font-family:var(--f-display);font-weight:800;
+  font-size:calc(var(--u)*1.52);line-height:1.1;letter-spacing:-.01em}
+.perk span{display:block;font-weight:500;font-size:calc(var(--u)*1.16);
+  color:#cfe3ee;margin-top:calc(var(--u)*.12)}
 .media{position:relative;width:100%;overflow:hidden;border-radius:calc(var(--u)*1.1);
   background:#0a2b47;
   /* --media ist die Basishoehe; uebriger Platz geht ins Bild statt als
@@ -82,13 +95,20 @@ h1 .ak{color:${C.teal};-webkit-text-fill-color:${C.teal}}
 `;
 
 const ARROW = `<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
+const AUTO  = `<svg viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="11" rx="2"/>`+
+              `<path d="M16 10h3.5L23 13.5V17h-7z"/><circle cx="5.5" cy="18.5" r="2"/>`+
+              `<circle cx="18.5" cy="18.5" r="2"/></svg>`;
+const perkAuto = `<div class="pad"><div class="perk">`+
+  `<span class="perk__ic">${AUTO}</span>`+
+  `<div><b>Firmenwagen &ndash; auch privat</b>`+
+  `<span>Firmenhandy und Firmentablet inklusive</span></div></div></div>`;
 const logoHead = `<div class="head"><span class="badge"><img src="${LOGO}" alt=""></span><span class="firma">Kaltmaier</span></div>`;
 const cta = (b,s)=>`<div class="cta"><div><b>${b}</b><span>${s}</span></div><span class="arrow">${ARROW}</span></div>`;
 
 /* ---- die drei Konzepte ---------------------------------------------- */
 const KONZEPTE = {
   /* 1 · Benefit voran */
-  'benefit': ({u,pad,gap}) => `
+  'benefit': (f) => `
     ${logoHead}
     <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
       <span class="eyebrow"><i></i>Metzingen &middot; Wir stellen ein</span>
@@ -108,7 +128,7 @@ const KONZEPTE = {
     <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`,
 
   /* 2 · Direkte Ansprache des Berufsbilds */
-  'beruf': ({u,pad,gap}) => `
+  'beruf': (f) => `
     ${logoHead}
     <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
       <span class="eyebrow"><i></i>Meister &middot; Techniker &middot; Ingenieur SHK</span>
@@ -116,19 +136,22 @@ const KONZEPTE = {
         <h1>Projektleiter <span class="mwd">(m/w/d)</span></h1>
         <div class="jobline">F&uuml;hr deine eigenen Projekte.</div>
       </div>
-      <p class="sub">Von der Planung bis zur &Uuml;bergabe: Du steuerst die Projekte, leitest die Monteure an und entscheidest selbst.</p>
+      <p class="sub">${f.key === '1x1'
+        ? 'Von der Planung bis zur &Uuml;bergabe &ndash; du entscheidest.'
+        : 'Von der Planung bis zur &Uuml;bergabe: Du steuerst die Projekte, leitest die Monteure an und entscheidest selbst.'}</p>
       <div class="chips">
         <span class="chip on">Unbefristet</span>
         <span class="chip">Vollzeit</span>
         <span class="chip">Metzingen</span>
       </div>
     </div>
-    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${MONTEUR}" alt=""></div>
+    <div style="margin-top:var(--stack-gap)">${perkAuto}</div>
+    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${MONTEUR}" style="object-position:center 42%" alt=""></div>
     <div class="pad">${cta('Jetzt bewerben','Vier kurze Fragen &middot; kein Anschreiben')}</div>
     <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`,
 
   /* 3 · Problem - Loesung */
-  'wechsel': ({u,pad,gap}) => `
+  'wechsel': (f) => `
     ${logoHead}
     <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
       <span class="eyebrow"><i></i>Zeit f&uuml;r den n&auml;chsten Schritt</span>
@@ -194,8 +217,8 @@ const rawPage = (inner)=>`<!doctype html><html lang="de"><head><meta charset="ut
 
 const FORMATE = [
   /* Feed quadratisch - klassische Feed-Platzierung */
-  { key:'1x1',  w:1080, h:1080, u:19, pad:50, h1:92,  media:196,
-    stackTop:26, stackGap:21, mediaTop:26, mediaBot:22 },
+  { key:'1x1',  w:1080, h:1080, u:19, pad:50, h1:88,  media:196,
+    stackTop:22, stackGap:18, mediaTop:22, mediaBot:18 },
   /* Feed hoch - nimmt im Feed mehr Flaeche ein, Metas Empfehlung */
   { key:'4x5',  w:1080, h:1350, u:20, pad:54, h1:104, media:300,
     stackTop:40, stackGap:26, mediaTop:38, mediaBot:32 },
@@ -212,17 +235,20 @@ for (const [name, build] of Object.entries(KONZEPTE)){
   for (const f of FORMATE){
     const p = await ctx.newPage();
     await p.setViewportSize({ width:f.w, height:f.h });
-    await p.setContent(page1(f, build({u:'var(--u)', pad:'var(--pad)', gap:'var(--gap)'})), { waitUntil:'load' });
+    await p.setContent(page1(f, build(f)), { waitUntil:'load' });
     await p.evaluate(()=>document.fonts.ready);
     await p.waitForTimeout(400);
     const fit = await p.evaluate(()=>{
       const c=document.querySelector('.canvas'), h=c.querySelector('h1');
       const cs=getComputedStyle(h);
       const zeilen=Math.round(h.getBoundingClientRect().height/parseFloat(cs.lineHeight));
-      return { soll:c.clientHeight, ist:c.scrollHeight, zeilen };
+      const m=c.querySelector('.media');
+      return { soll:c.clientHeight, ist:c.scrollHeight, zeilen,
+               bild:m?Math.round(m.getBoundingClientRect().height):0 };
     });
     if (fit.ist > fit.soll) console.log(`  !! ${name}-${f.key}: Inhalt ${fit.ist}px > Flaeche ${fit.soll}px`);
     if (fit.zeilen > 1)     console.log(`  !! ${name}-${f.key}: Stellentitel bricht auf ${fit.zeilen} Zeilen um`);
+    if (fit.bild && fit.bild < 240) console.log(`  !! ${name}-${f.key}: Bild nur ${fit.bild}px hoch`);
     const file = path.join(out, `${name}-${f.key}.png`);
     await p.locator('.canvas').screenshot({ path:file });
     made.push(file); await p.close();
