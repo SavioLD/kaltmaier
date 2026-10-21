@@ -1,8 +1,16 @@
 /* =====================================================================
-   CREATIVE-GENERATOR  ·  Bad & Heizung Kaltmaier
-   Rendert die Meta-Ads-Creatives und die Facebook-Bilder aus HTML
-   mit Chromium. Aufruf:  node creatives/build.mjs
-   Es wird ausschliesslich das Bildmaterial aus bilder/ verwendet.
+   CREATIVE-GENERATOR  ·  Bad & Heizung Kaltmaier  ·  Projektleiter (m/w/d)
+   Aufruf:  node creatives/build.mjs
+
+   Drei gestalterisch verschiedene Varianten zur Auswahl, jede in
+   1:1, 4:5 und 9:16. Es wird ausschliesslich das Bildmaterial aus
+   bilder/ verwendet, das Original-Logo bleibt unveraendert.
+
+   BILDAUSSCHNITT
+   Zu jedem Foto ist die Kopfzone hinterlegt (von-bis als Anteil der
+   Bildhoehe, am Raster abgelesen). Die object-position wird daraus beim
+   Rendern je Flaeche BERECHNET, nicht geschaetzt - und das Skript meldet
+   jeden Fall, in dem die Koepfe nicht vollstaendig hineinpassen.
    ===================================================================== */
 import { chromium } from 'playwright';
 import { fileURLToPath } from 'url';
@@ -13,264 +21,271 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
 const out  = here;
 
-/* Bildmaterial als Data-URI einbetten - setContent() hat keine Basis-URL,
-   file://-Pfade wuerden nicht geladen. */
 const dataUri = (rel, mime) =>
   `data:${mime};base64,` + fs.readFileSync(path.join(root, rel)).toString('base64');
-const LOGO    = dataUri('bilder/buh_logo.png.webp', 'image/webp');
-/* Echte Betriebsfotos. Verwendet werden die web-optimierten Fassungen aus
-   bilder/web/ - bei 1080 px Ausgabebreite reichen sie voellig und halten
-   die Base64-Einbettung klein. Das frueher genutzte Musterbild
-   (Vorschau_Muster_Kundendienstmonteur.jpg) wird nicht mehr gebraucht. */
-const TEAM    = dataUri('bilder/web/hero-team.jpg',         'image/jpeg');
-const PLANUNG = dataUri('bilder/web/stelle-planung.jpg',    'image/jpeg');
-const ZUSAMMEN= dataUri('bilder/web/team-zusammenhalt.jpg', 'image/jpeg');
 
-/* CI – exakt aus dem Original-Logo ausgelesen */
-const C = {
-  blau900:'#00243f', blau800:'#00315c', blau:'#004d91',
-  teal:'#008c8d', tealBtn:'#00787a', tealHell:'#e0f0f0'
+const LOGO = dataUri('bilder/buh_logo.png.webp', 'image/webp');
+
+/* kopf: [oben, unten] als Anteil der Bildhoehe */
+const F = {
+  team:     { src: dataUri('bilder/web/hero-team.jpg','image/jpeg'),         kopf:[0.32,0.56] },
+  zusammen: { src: dataUri('bilder/web/team-zusammenhalt.jpg','image/jpeg'), kopf:[0.02,0.34] },
+  planung:  { src: dataUri('bilder/web/stelle-planung.jpg','image/jpeg'),    kopf:[0.05,0.50] },
+  technik:  { src: dataUri('bilder/web/technik-anlage.jpg','image/jpeg'),    kopf:[0.10,0.40] },
+  beratung: { src: dataUri('bilder/web/beratung-bad.jpg','image/jpeg'),      kopf:[0.05,0.40] }
 };
+const bild = (k, extra='') =>
+  `<img src="${F[k].src}" data-kopf="${F[k].kopf[0]},${F[k].kopf[1]}" style="${extra}" alt="">`;
+
+/* CI, exakt aus dem Original-Logo ausgelesen */
+const C = { blau900:'#00243f', blau800:'#00315c', blau:'#004d91',
+            teal:'#008c8d', tealBtn:'#00787a' };
 
 const BASE = `
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Source Sans 3",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 .canvas{position:relative;overflow:hidden;display:flex;flex-direction:column;
   background:linear-gradient(150deg,${C.blau900} 0%,${C.blau800} 55%,${C.blau} 125%);color:#fff}
-.canvas::after{content:"";position:absolute;right:-18%;top:-12%;width:68%;aspect-ratio:1;
-  border-radius:50%;background:radial-gradient(circle,rgba(0,140,141,.30),transparent 68%)}
-.canvas.plain::after{display:none}
-.pad{padding:0 var(--pad)}
-.head{display:flex;align-items:center;gap:var(--gap);padding-top:var(--pad);position:relative;z-index:2}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
 .badge{background:#fff;border-radius:calc(var(--u)*.9);padding:calc(var(--u)*.55) calc(var(--u)*.85);display:block}
-.badge img{display:block;height:calc(var(--u)*2.0);width:auto}
-.firma{font-weight:800;font-size:calc(var(--u)*2.0);letter-spacing:-.01em;line-height:1}
+.badge img{height:calc(var(--u)*2.0);width:auto;object-fit:contain}
+.marke{display:flex;align-items:center;gap:calc(var(--u)*1.0)}
+.marke b{font-weight:800;font-size:calc(var(--u)*2.0);letter-spacing:-.012em;line-height:1}
+
 .eyebrow{display:inline-flex;align-items:center;gap:calc(var(--u)*.55);font-weight:700;
   font-size:calc(var(--u)*1.18);letter-spacing:.14em;text-transform:uppercase;color:#9fdada}
 .eyebrow i{width:calc(var(--u)*.72);height:calc(var(--u)*.72);border-radius:50%;background:${C.teal};
   box-shadow:0 0 0 calc(var(--u)*.3) rgba(0,140,141,.32)}
-/* Der Stellentitel ist das groesste Element der Flaeche. Der jeweilige
-   Werbe-Winkel steht als zweite, kleinere Zeile darunter - so ist auf
-   einen Blick klar, welche Stelle beworben wird. */
 h1{font-weight:900;letter-spacing:-.03em;line-height:.98;font-size:var(--h1)}
 h1 .mwd{font-size:.44em;font-weight:800;letter-spacing:-.01em}
-h1 .ak{color:${C.teal};-webkit-text-fill-color:${C.teal}}
-.title{display:flex;flex-direction:column;gap:calc(var(--u)*.55)}
-.jobline{font-family:var(--f-display);font-weight:900;color:${C.teal};
+.jobline{font-family:inherit;font-weight:900;color:${C.teal};
   font-size:calc(var(--h1)*.50);line-height:1.03;letter-spacing:-.022em}
-.sub{font-weight:500;font-size:calc(var(--u)*1.72);line-height:1.34;color:#d2e2ee}
-.chips{display:flex;flex-wrap:wrap;gap:calc(var(--u)*.62)}
-.chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);border-radius:999px;
-  padding:calc(var(--u)*.56) calc(var(--u)*1.12);font-weight:700;font-size:calc(var(--u)*1.28)}
-.chip.on{background:${C.teal};border-color:${C.teal}}
-/* Hervorgehobener Benefit-Block: traegt den Firmenwagen samt dem, was
-   dazugehoert. Teal-getoent, damit er sich klar vom Fliesstext abhebt. */
-.perk{display:flex;align-items:center;gap:calc(var(--u)*.95);
-  background:rgba(0,140,141,.18);border:1px solid rgba(0,140,141,.55);
-  border-radius:calc(var(--u)*.9);padding:calc(var(--u)*.9) calc(var(--u)*1.15)}
-.perk__ic{flex:0 0 auto;width:calc(var(--u)*2.4);height:calc(var(--u)*2.4);border-radius:50%;
-  background:${C.teal};display:grid;place-items:center}
-.perk__ic svg{width:calc(var(--u)*1.35);height:calc(var(--u)*1.35);stroke:#fff;fill:none;
-  stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.perk b{display:block;font-family:var(--f-display);font-weight:800;
-  font-size:calc(var(--u)*1.52);line-height:1.1;letter-spacing:-.01em}
-.perk span{display:block;font-weight:500;font-size:calc(var(--u)*1.16);
-  color:#cfe3ee;margin-top:calc(var(--u)*.12)}
-.media{position:relative;width:100%;overflow:hidden;border-radius:calc(var(--u)*1.1);
-  background:#0a2b47;
-  /* --media ist die Basishoehe; uebriger Platz geht ins Bild statt als
-     Leerraum nach unten. Das Inline-margin-Shorthand der Konzepte wuerde
-     ein margin-top:auto ohnehin ueberschreiben. */
-  flex:1 1 var(--media);min-height:150px}
-.media img{width:100%;height:100%;object-fit:cover;display:block}
-.media::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(0,36,64,.08) 40%,rgba(0,36,64,.72) 100%)}
-.cta{display:flex;align-items:center;justify-content:space-between;gap:var(--gap);
-  background:${C.tealBtn};border-radius:calc(var(--u)*1.0);padding:calc(var(--u)*1.25) calc(var(--u)*1.6);
-  position:relative;z-index:2}
+
+.haken{display:grid;gap:calc(var(--u)*.62)}
+.haken li{list-style:none;display:flex;align-items:flex-start;gap:calc(var(--u)*.72);
+  font-weight:600;font-size:calc(var(--u)*1.42);line-height:1.26}
+.haken svg{flex:0 0 auto;width:calc(var(--u)*1.5);height:calc(var(--u)*1.5);margin-top:calc(var(--u)*.14);
+  stroke:${C.teal};fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+
+.cta{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*1.1);
+  background:${C.tealBtn};border-radius:calc(var(--u)*1.0);
+  padding:calc(var(--u)*1.25) calc(var(--u)*1.6)}
 .cta b{font-weight:800;font-size:calc(var(--u)*1.72);letter-spacing:-.01em}
 .cta span{font-weight:600;font-size:calc(var(--u)*1.2);color:#d5f0f0;display:block;margin-top:calc(var(--u)*.18)}
-.cta .arrow{flex:0 0 auto;width:calc(var(--u)*2.9);height:calc(var(--u)*2.9);border-radius:50%;
+.cta .pfeil{flex:0 0 auto;width:calc(var(--u)*2.9);height:calc(var(--u)*2.9);border-radius:50%;
   background:#fff;display:grid;place-items:center}
-.cta .arrow svg{width:calc(var(--u)*1.5);height:calc(var(--u)*1.5);stroke:${C.tealBtn};fill:none;stroke-width:2.6;
-  stroke-linecap:round;stroke-linejoin:round}
-.foot{font-weight:600;font-size:calc(var(--u)*1.12);color:#9fb6c8;text-align:center;
-  padding-bottom:var(--pad);position:relative;z-index:2}
-.stack{display:flex;flex-direction:column;position:relative;z-index:2}
+.cta .pfeil svg{width:calc(var(--u)*1.5);height:calc(var(--u)*1.5);stroke:${C.tealBtn};fill:none;
+  stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.foot{font-weight:600;font-size:calc(var(--u)*1.12);color:#9fb6c8;text-align:center}
 `;
 
-const ARROW = `<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
-const AUTO  = `<svg viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="11" rx="2"/>`+
-              `<path d="M16 10h3.5L23 13.5V17h-7z"/><circle cx="5.5" cy="18.5" r="2"/>`+
-              `<circle cx="18.5" cy="18.5" r="2"/></svg>`;
-const perkAuto = `<div class="pad"><div class="perk">`+
-  `<span class="perk__ic">${AUTO}</span>`+
-  `<div><b>Firmenwagen &ndash; auch privat</b>`+
-  `<span>Firmenhandy und Firmentablet inklusive</span></div></div></div>`;
-const logoHead = `<div class="head"><span class="badge"><img src="${LOGO}" alt=""></span><span class="firma">Kaltmaier</span></div>`;
-const cta = (b,s)=>`<div class="cta"><div><b>${b}</b><span>${s}</span></div><span class="arrow">${ARROW}</span></div>`;
+const PFEIL = `<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
+const HAKEN = `<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>`;
+const marke = `<span class="marke"><span class="badge"><img src="${LOGO}" alt=""></span><b>Kaltmaier</b></span>`;
+const titel = `<h1>Projektleiter <span class="mwd">(m/w/d)</span></h1>`;
+const cta = (a,b) => `<div class="cta"><div><b>${a}</b><span>${b}</span></div><span class="pfeil">${PFEIL}</span></div>`;
+const li  = t => `<li>${HAKEN}<span>${t}</span></li>`;
 
-/* ---- die drei Konzepte ---------------------------------------------- */
-const KONZEPTE = {
-  /* 1 · Benefit voran */
-  'benefit': (f) => `
-    ${logoHead}
-    <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
-      <span class="eyebrow"><i></i>Metzingen &middot; Wir stellen ein</span>
-      <div class="title">
-        <h1>Projektleiter <span class="mwd">(m/w/d)</span></h1>
-        <div class="jobline">Firmenwagen &ndash; auch privat.</div>
-      </div>
-      <p class="sub">Dazu Firmenhandy, Firmentablet und 30&nbsp;Tage Urlaub &ndash; bei einem Fachbetrieb f&uuml;r Bad und Heizung.</p>
-      <div class="chips">
-        <span class="chip on">30 Tage Urlaub</span>
-        <span class="chip">Unbefristet</span>
-        <span class="chip">Urlaubs- &amp; Weihnachtsgeld</span>
-      </div>
-    </div>
-    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${TEAM}" style="object-position:center 58%" alt=""></div>
-    <div class="pad">${cta('Jetzt bewerben','In unter 60 Sekunden &middot; ohne Lebenslauf')}</div>
-    <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`,
+/* =====================================================================
+   DIE DREI VARIANTEN
+   ===================================================================== */
+const VARIANTEN = {
 
-  /* 2 · Direkte Ansprache des Berufsbilds */
-  'beruf': (f) => `
-    ${logoHead}
-    <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
-      <span class="eyebrow"><i></i>Meister &middot; Techniker &middot; Ingenieur SHK</span>
-      <div class="title">
-        <h1>Projektleiter <span class="mwd">(m/w/d)</span></h1>
-        <div class="jobline">F&uuml;hr deine eigenen Projekte.</div>
-      </div>
-      <p class="sub">${f.key === '1x1'
-        ? 'Von der Planung bis zur &Uuml;bergabe &ndash; du entscheidest.'
-        : 'Von der Planung bis zur &Uuml;bergabe: Du steuerst die Projekte, leitest die Monteure an und entscheidest selbst.'}</p>
-      <div class="chips">
-        <span class="chip on">Unbefristet</span>
-        <span class="chip">Vollzeit</span>
-        <span class="chip">Metzingen</span>
-      </div>
-    </div>
-    <div style="margin-top:var(--stack-gap)">${perkAuto}</div>
-    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${PLANUNG}" style="object-position:center 45%" alt=""></div>
-    <div class="pad">${cta('Jetzt bewerben','Vier kurze Fragen &middot; kein Anschreiben')}</div>
-    <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`,
+/* ---- 1 · Fotoblock oben, Inhalt unten auf Blau --------------------- */
+'v1-fotoblock': f => `
+  <div style="position:relative;flex:0 0 ${f.v1Foto};overflow:hidden">
+    ${bild('planung')}
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,
+      rgba(0,36,64,.62) 0%,rgba(0,36,64,.10) 34%,rgba(0,36,64,.08) 62%,rgba(0,49,92,.92) 100%)"></div>
+    <div style="position:absolute;top:var(--pad);left:var(--pad)">${marke}</div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:var(--gap);padding:0 var(--pad) var(--pad)">
+    <span class="eyebrow" style="margin-top:calc(var(--u)*-.4)"><i></i>Metzingen &middot; Vollzeit &middot; unbefristet</span>
+    ${titel}
+    <div class="jobline">F&uuml;hr deine eigenen Projekte.</div>
+    <ul class="haken">
+      ${li('Meister, Techniker oder Ingenieur SHK')}
+      ${li('Firmenwagen &ndash; auch privat')}
+      ${li('30 Tage Urlaub, unbefristet')}
+    </ul>
+    <div style="margin-top:auto">${cta('Jetzt bewerben','In unter 60 Sekunden &middot; ohne Lebenslauf')}</div>
+    <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>
+  </div>`,
 
-  /* 3 · Problem - Loesung */
-  'wechsel': (f) => `
-    ${logoHead}
-    <div class="stack pad" style="gap:var(--stack-gap);padding-top:var(--stack-top)">
-      <span class="eyebrow"><i></i>Zeit f&uuml;r den n&auml;chsten Schritt</span>
-      <div class="title">
-        <h1>Projektleiter <span class="mwd">(m/w/d)</span></h1>
-        <div class="jobline">Statt immer nur montieren.</div>
-      </div>
-      <p class="sub">&Uuml;bernimm die Projektleitung, leite dein Team an und entscheide selbst &ndash; mit allem, was dazugeh&ouml;rt.</p>
-      <div class="chips">
-        <span class="chip on">Firmenwagen privat</span>
-        <span class="chip">Weiterbildung</span>
-        <span class="chip">Junges Team</span>
-      </div>
+/* ---- 2 · Vollflaechiges Foto, Text unten im Verlauf ---------------- */
+'v2-vollbild': f => `
+  <div style="position:absolute;inset:0">${bild('team')}</div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,
+    rgba(0,36,64,.80) 0%,rgba(0,36,64,.30) 22%,rgba(0,36,64,.34) 42%,
+    rgba(0,41,74,.90) 68%,rgba(0,36,64,.97) 100%)"></div>
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;
+       height:100%;padding:var(--pad)">
+    ${marke}
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:var(--gap)">
+      <span class="eyebrow"><i></i>Wir stellen ein &middot; Metzingen</span>
+      ${titel}
+      <div class="jobline">Firmenwagen &ndash; auch privat.</div>
+      <ul class="haken">
+        ${li('Firmenhandy und Firmentablet dazu')}
+        ${li('30 Tage Urlaub, Urlaubs- und Weihnachtsgeld')}
+        ${li('Unbefristet, mit Weiterbildung')}
+      </ul>
+      ${cta('Jetzt bewerben','Vier kurze Fragen &middot; kein Anschreiben')}
+      <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>
     </div>
-    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${ZUSAMMEN}" style="object-position:center 48%" alt=""></div>
-    <div class="pad">${cta('Jetzt bewerben','Ohne Lebenslauf &middot; wir melden uns pers&ouml;nlich')}</div>
-    <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`
+  </div>`,
+
+/* ---- 3 · Fakten: Liste und Foto ----------------------------------
+   Im Hoch- und Quadratformat stehen Liste und Hochkant-Foto nebeneinander.
+   In 9:16 waere die Fotospalte extrem schmal und die Liste wuerde ueber
+   die ganze Hoehe auseinandergezogen - dort liegt das Foto deshalb als
+   breites Band unter der Liste.                                      */
+'v3-fakten': f => {
+  const punkte = [
+    'Abschluss als Meister, Techniker oder Ingenieur SHK',
+    'Erfahrung und Organisationsgeschick',
+    'Freude daran, Monteure anzuleiten',
+    'Firmenwagen, auch privat',
+    '30 Tage Urlaub &amp; unbefristet'
+  ].map(li).join('');
+  const hoch = f.key === '9x16';
+  const block = hoch
+    ? `<ul class="haken" style="align-content:start">${punkte}</ul>
+       <div style="flex:1;min-height:0;border-radius:calc(var(--u)*1.1);overflow:hidden;background:#0a2b47">
+         ${bild('technik')}
+       </div>`
+    : `<div style="display:flex;gap:calc(var(--u)*1.4);align-items:stretch">
+         <ul class="haken" style="flex:1 1 58%;align-content:start">${punkte}</ul>
+         <div style="flex:0 0 36%;aspect-ratio:3/4;border-radius:calc(var(--u)*1.1);
+              overflow:hidden;background:#0a2b47">${bild('technik')}</div>
+       </div>`;
+  return `
+  <div style="display:flex;flex-direction:column;height:100%;padding:var(--pad);gap:var(--gap)">
+    ${marke}
+    <span class="eyebrow"><i></i>Meister &middot; Techniker &middot; Ingenieur SHK</span>
+    ${titel}
+    <div class="jobline">Das bringst du mit. Das bekommst du.</div>
+    ${block}
+    <div style="margin-top:auto">${cta('Jetzt bewerben','Ohne Lebenslauf &middot; wir melden uns pers&ouml;nlich')}</div>
+    <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>
+  </div>`;
+}
 };
 
-/* ---- Facebook ------------------------------------------------------- */
-function fbProfil(){
-  /* 1080 x 1080. Facebook beschneidet rund - alles Wichtige bleibt weit
-     innerhalb des einbeschriebenen Quadrats (ca. 764 x 764 mittig).
-     Reinweisser Grund, weil das Original-Logo einen weissen Hintergrund
-     mitbringt; so ist keine Kante sichtbar und das Logo bleibt unveraendert. */
-  return `<div class="canvas plain" style="width:1080px;height:1080px;--u:20px;--pad:0;--gap:0;
-      background:#fff;align-items:center;justify-content:center">
-    <div style="display:flex;flex-direction:column;align-items:center;gap:52px;position:relative;z-index:2">
-      <img src="${LOGO}" style="width:612px;height:auto;display:block">
-      <div style="font-weight:900;font-size:122px;letter-spacing:-.03em;color:${C.blau};line-height:1">Kaltmaier</div>
-      <div style="width:340px;height:12px;border-radius:999px;background:${C.teal}"></div>
-    </div>
-  </div>`;
-}
-function fbTitel(){
-  /* 1640 x 856, Sicherheitszone 1092 x 616 mittig, unten rechts frei */
-  return `<div class="canvas" style="width:1640px;height:856px;--u:20px;--pad:0;--gap:0;justify-content:center">
-    <img src="${TEAM}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 52%">
-    <div style="position:absolute;inset:0;background:linear-gradient(95deg,rgba(0,36,64,.97) 0%,rgba(0,36,64,.95) 54%,rgba(0,49,92,.62) 76%,rgba(0,49,92,.20) 100%)"></div>
-    <div style="position:relative;z-index:2;width:1092px;margin:0 auto;display:flex;flex-direction:column;gap:30px">
-      <div style="display:flex;align-items:center;gap:24px">
-        <span style="background:#fff;border-radius:14px;padding:13px 19px;display:block">
-          <img src="${LOGO}" style="height:52px;width:auto;display:block"></span>
-        <span style="font-weight:800;font-size:52px;letter-spacing:-.015em;line-height:1">Kaltmaier</span>
-      </div>
-      <div style="font-weight:900;font-size:76px;line-height:1.02;letter-spacing:-.028em;max-width:820px">
-        Komplette B&auml;der.<br>Moderne <span style="color:${C.teal}">Heiztechnik.</span></div>
-      <div style="font-weight:600;font-size:30px;color:#cfe0ec;max-width:760px">
-        Ihr Fachbetrieb in Metzingen &ndash; f&uuml;r private, gewerbliche und kommunale Bauherren.</div>
-    </div>
-  </div>`;
-}
+/* ---- Facebook ------------------------------------------------------ */
+const fbProfil = () => `<div class="canvas" style="width:1080px;height:1080px;--u:20px;
+    background:#fff;align-items:center;justify-content:center">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:52px">
+    <img src="${LOGO}" style="width:612px;height:auto;object-fit:contain">
+    <div style="font-weight:900;font-size:122px;letter-spacing:-.03em;color:${C.blau};line-height:1">Kaltmaier</div>
+    <div style="width:340px;height:12px;border-radius:999px;background:${C.teal}"></div>
+  </div></div>`;
 
-const page1 = (f,inner)=>`<!doctype html><html lang="de"><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>${BASE}</style></head><body>
-<div class="canvas" style="width:${f.w}px;height:${f.h}px;--u:${f.u}px;--pad:${f.pad}px;--gap:${Math.round(f.u*1.1)}px;--h1:${f.h1}px;--media:${f.media}px;--stack-top:${f.stackTop}px;--stack-gap:${f.stackGap}px;--media-top:${f.mediaTop}px;--media-bot:${f.mediaBot}px">
-${inner}</div></body></html>`;
+const fbTitel = () => `<div class="canvas" style="width:1640px;height:856px;--u:20px;justify-content:center">
+  <div style="position:absolute;inset:0">${bild('team')}</div>
+  <div style="position:absolute;inset:0;background:linear-gradient(95deg,rgba(0,36,64,.97) 0%,
+    rgba(0,36,64,.95) 54%,rgba(0,49,92,.62) 76%,rgba(0,49,92,.20) 100%)"></div>
+  <div style="position:relative;z-index:2;width:1092px;margin:0 auto;display:flex;flex-direction:column;gap:30px">
+    <div style="display:flex;align-items:center;gap:24px">
+      <span style="background:#fff;border-radius:14px;padding:13px 19px;display:block">
+        <img src="${LOGO}" style="height:52px;width:auto;object-fit:contain"></span>
+      <span style="font-weight:800;font-size:52px;letter-spacing:-.015em;line-height:1">Kaltmaier</span>
+    </div>
+    <div style="font-weight:900;font-size:76px;line-height:1.02;letter-spacing:-.028em;max-width:820px">
+      Komplette B&auml;der.<br>Moderne <span style="color:${C.teal}">Heiztechnik.</span></div>
+    <div style="font-weight:600;font-size:30px;color:#cfe0ec;max-width:760px">
+      Ihr Fachbetrieb in Metzingen &ndash; f&uuml;r private, gewerbliche und kommunale Bauherren.</div>
+  </div></div>`;
 
-const rawPage = (inner)=>`<!doctype html><html lang="de"><head><meta charset="utf-8">
+const seite = inner => `<!doctype html><html lang="de"><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>${BASE}</style></head><body>${inner}</body></html>`;
 
 const FORMATE = [
-  /* Feed quadratisch - klassische Feed-Platzierung */
-  { key:'1x1',  w:1080, h:1080, u:19, pad:50, h1:88,  media:196,
-    stackTop:22, stackGap:18, mediaTop:22, mediaBot:18 },
-  /* Feed hoch - nimmt im Feed mehr Flaeche ein, Metas Empfehlung */
-  { key:'4x5',  w:1080, h:1350, u:20, pad:54, h1:104, media:300,
-    stackTop:40, stackGap:26, mediaTop:38, mediaBot:32 },
-  /* Story / Reels */
-  { key:'9x16', w:1080, h:1920, u:22, pad:60, h1:116, media:700,
-    stackTop:70, stackGap:33, mediaTop:48, mediaBot:40 }
+  { key:'1x1',  w:1080, h:1080, u:19, pad:50, h1:88,  gap:17, v1Foto:'43%' },
+  { key:'4x5',  w:1080, h:1350, u:20, pad:54, h1:100, gap:21, v1Foto:'51%' },
+  { key:'9x16', w:1080, h:1920, u:22, pad:60, h1:116, gap:27, v1Foto:'57%' }
 ];
 
-const browser = await chromium.launch();
-const ctx = await browser.newContext({ deviceScaleFactor:1 });
-const made = [];
+/* =====================================================================
+   BILDAUSSCHNITT BERECHNEN
+   Bei object-fit:cover wird nur dann vertikal beschnitten, wenn die
+   Flaeche breiter proportioniert ist als das Foto. Sichtbar bleibt dann
+   der Anteil f = Bildverhaeltnis / Flaechenverhaeltnis. Die
+   object-position wird so gesetzt, dass die Kopfzone mittig darin liegt,
+   und auf den gueltigen Bereich begrenzt.
+   ===================================================================== */
+const AUSSCHNITT = `(() => {
+  const berichte = [];
+  document.querySelectorAll('img[data-kopf]').forEach((img, i) => {
+    const [a, b] = img.dataset.kopf.split(',').map(Number);
+    const r = img.getBoundingClientRect();
+    const Rc = r.width / r.height, Ri = img.naturalWidth / img.naturalHeight;
+    if (Rc <= Ri + 1e-6) {                       // kein vertikaler Beschnitt
+      img.style.objectPosition = 'center center';
+      berichte.push({ i, ok: true, sichtbar: 1 });
+      return;
+    }
+    const f = Ri / Rc;                            // sichtbarer Anteil der Hoehe
+    let p = ((a + b) / 2 - f / 2) / (1 - f);      // Kopfzone mittig
+    const pMin = Math.max(0, (b - f) / (1 - f));
+    const pMax = Math.min(1, a / (1 - f));
+    const passt = (b - a) <= f + 1e-6;
+    if (passt) p = Math.min(Math.max(p, pMin), pMax);
+    p = Math.min(Math.max(p, 0), 1);
+    img.style.objectPosition = 'center ' + (p * 100).toFixed(1) + '%';
+    berichte.push({ i, ok: passt, sichtbar: +f.toFixed(3), noetig: +(b - a).toFixed(3) });
+  });
+  return berichte;
+})()`;
 
-for (const [name, build] of Object.entries(KONZEPTE)){
-  for (const f of FORMATE){
-    const p = await ctx.newPage();
-    await p.setViewportSize({ width:f.w, height:f.h });
-    await p.setContent(page1(f, build(f)), { waitUntil:'load' });
-    await p.evaluate(()=>document.fonts.ready);
-    await p.waitForTimeout(400);
-    const fit = await p.evaluate(()=>{
-      const c=document.querySelector('.canvas'), h=c.querySelector('h1');
-      const cs=getComputedStyle(h);
-      const zeilen=Math.round(h.getBoundingClientRect().height/parseFloat(cs.lineHeight));
-      const m=c.querySelector('.media');
-      return { soll:c.clientHeight, ist:c.scrollHeight, zeilen,
-               bild:m?Math.round(m.getBoundingClientRect().height):0 };
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ deviceScaleFactor: 1 });
+const gemacht = [];
+let warnungen = 0;
+
+async function render(html, w, h, datei, pruefen = true) {
+  const p = await ctx.newPage();
+  await p.setViewportSize({ width: w, height: h });
+  await p.setContent(seite(html), { waitUntil: 'load' });
+  await p.evaluate(() => document.fonts.ready);
+  await p.waitForTimeout(350);
+  const schnitt = await p.evaluate(AUSSCHNITT);
+  await p.waitForTimeout(120);
+  if (pruefen) {
+    const c = await p.evaluate(() => {
+      const el = document.querySelector('.canvas'), h1 = el.querySelector('h1');
+      const zeilen = h1 ? Math.round(h1.getBoundingClientRect().height /
+                      parseFloat(getComputedStyle(h1).lineHeight)) : 1;
+      return { soll: el.clientHeight, ist: el.scrollHeight, zeilen };
     });
-    if (fit.ist > fit.soll) console.log(`  !! ${name}-${f.key}: Inhalt ${fit.ist}px > Flaeche ${fit.soll}px`);
-    if (fit.zeilen > 1)     console.log(`  !! ${name}-${f.key}: Stellentitel bricht auf ${fit.zeilen} Zeilen um`);
-    if (fit.bild && fit.bild < 240) console.log(`  !! ${name}-${f.key}: Bild nur ${fit.bild}px hoch`);
-    const file = path.join(out, `${name}-${f.key}.png`);
-    await p.locator('.canvas').screenshot({ path:file });
-    made.push(file); await p.close();
+    if (c.ist > c.soll) { console.log(`  !! ${datei}: Inhalt ${c.ist}px > Flaeche ${c.soll}px`); warnungen++; }
+    if (c.zeilen > 1)   { console.log(`  !! ${datei}: Stellentitel bricht auf ${c.zeilen} Zeilen um`); warnungen++; }
+    schnitt.forEach(s => { if (!s.ok) {
+      console.log(`  !! ${datei}: Koepfe passen nicht - sichtbar ${(s.sichtbar*100).toFixed(0)}%, noetig ${(s.noetig*100).toFixed(0)}%`);
+      warnungen++;
+    }});
+  }
+  const fp = path.join(out, datei);
+  await p.locator('.canvas').screenshot({ path: fp });
+  gemacht.push(fp);
+  await p.close();
+}
+
+for (const [name, bau] of Object.entries(VARIANTEN)) {
+  for (const f of FORMATE) {
+    const stil = `width:${f.w}px;height:${f.h}px;--u:${f.u}px;--pad:${f.pad}px;` +
+                 `--h1:${f.h1}px;--gap:${f.gap}px`;
+    await render(`<div class="canvas" style="${stil}">${bau(f)}</div>`, f.w, f.h, `${name}-${f.key}.png`);
   }
 }
-for (const [file, html, w, h] of [
-  ['facebook-profilbild.png', fbProfil(), 1080, 1080],
-  ['facebook-titelbild.png',  fbTitel(),  1640, 856]
-]){
-  const p = await ctx.newPage();
-  await p.setViewportSize({ width:w, height:h });
-  await p.setContent(rawPage(html), { waitUntil:'load' });
-  await p.evaluate(()=>document.fonts.ready);
-  await p.waitForTimeout(400);
-  const fp = path.join(out, file);
-  await p.locator('.canvas').screenshot({ path:fp });
-  made.push(fp); await p.close();
-}
+await render(fbProfil(), 1080, 1080, 'facebook-profilbild.png', false);
+await render(fbTitel(),  1640, 856,  'facebook-titelbild.png',  false);
+
 await browser.close();
-for (const m of made){ const s=fs.statSync(m); console.log(`  ${path.basename(m).padEnd(30)} ${(s.size/1024).toFixed(0)} KB`); }
+for (const m of gemacht) {
+  const s = fs.statSync(m);
+  console.log(`  ${path.basename(m).padEnd(30)} ${(s.size / 1024).toFixed(0)} KB`);
+}
+console.log(warnungen ? `\n${warnungen} Warnung(en)` : '\nKeine Warnungen.');

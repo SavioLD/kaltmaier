@@ -7,26 +7,30 @@ Alles in diesem Ordner wird aus `build.mjs` erzeugt:
 Gerendert wird mit Chromium (Playwright) aus HTML – dadurch sind Schrift,
 Farben und Abstaende exakt dieselben wie auf der Karriereseite.
 
-## Meta Ads
+## Drei Varianten zur Auswahl
 
-Jedes Konzept liegt in drei Formaten vor:
+Alle drei bewerben dieselbe Stelle, **Projektleiter (m/w/d)**, und
+unterscheiden sich im Aufbau – nicht nur in der Formulierung. Gedacht
+zum Aussuchen: eine davon ausspielen, nicht alle drei gleichzeitig.
+
+| Variante | Aufbau | Foto |
+|----------|--------|------|
+| `v1-fotoblock` | Grosser Fotoblock oben, Inhalt darunter auf Blau | Projektbesprechung |
+| `v2-vollbild` | Foto vollflaechig, Text unten im Verlauf | Team vor dem Betrieb |
+| `v3-fakten` | Blau dominiert, Fakten-Liste mit Haken, Foto als Karte | Kollege an der Anlage |
+
+Jede Variante liegt in drei Formaten vor:
 
 | Suffix | Groesse | Platzierung |
 |--------|---------|-------------|
 | `-1x1` | 1080 x 1080 | Feed, quadratisch |
-| `-4x5` | 1080 x 1350 | Feed, hoch (nimmt mehr Flaeche ein) |
+| `-4x5` | 1080 x 1350 | Feed, hoch |
 | `-9x16` | 1080 x 1920 | Story / Reels |
 
-In allen Creatives ist **„Projektleiter (m/w/d)" das groesste Element**.
-Der jeweilige Werbe-Winkel steht als zweite, kleinere Zeile in Teal
-darunter. So ist beim Scrollen sofort klar, welche Stelle beworben wird,
-und die drei Varianten bleiben trotzdem unterscheidbar.
-
-| Konzept | Zweite Zeile | Ansatz |
-|---------|--------------|--------|
-| `benefit-*` | „Firmenwagen – auch privat." | Benefit voran |
-| `beruf-*` | „Fuehr deine eigenen Projekte." | Berufsbild direkt, mit hervorgehobenem Firmenwagen-Block |
-| `wechsel-*` | „Statt immer nur montieren." | Problem/Loesung |
+`v3-fakten` ist als einzige formatabhaengig aufgebaut: in 1:1 und 4:5
+stehen Liste und Hochkant-Foto nebeneinander, in 9:16 liegt das Foto als
+breites Band unter der Liste. Nebeneinander waere die Fotospalte dort
+extrem schmal und die Liste ueber die ganze Hoehe auseinandergezogen.
 
 ## Facebook
 
@@ -35,34 +39,42 @@ und die drei Varianten bleiben trotzdem unterscheidbar.
 | `facebook-profilbild.png` | 1080x1080 | Reinweiss, Motiv weit innerhalb des runden Beschnitts |
 | `facebook-titelbild.png` | 1640x856 | Inhalt in der Sicherheitszone 1092x616 mittig, unten rechts frei |
 
+## Bildausschnitt: Koepfe bleiben drauf
+
+Zu jedem Foto ist in `build.mjs` die **Kopfzone** hinterlegt – von wo bis
+wo die Koepfe liegen, als Anteil der Bildhoehe, am Raster abgelesen:
+
+| Foto | Kopfzone |
+|------|----------|
+| `hero-team.jpg` | 32 – 56 % |
+| `team-zusammenhalt.jpg` | 2 – 34 % |
+| `stelle-planung.jpg` | 5 – 50 % |
+| `technik-anlage.jpg` | 10 – 40 % |
+| `beratung-bad.jpg` | 5 – 40 % |
+
+Beim Rendern wird daraus je Flaeche die `object-position` **berechnet**,
+nicht geschaetzt: Bei `object-fit:cover` wird nur dann vertikal
+beschnitten, wenn die Flaeche breiter proportioniert ist als das Foto;
+sichtbar bleibt dann der Anteil `f = Bildverhaeltnis / Flaechenverhaeltnis`.
+Die Position wird so gesetzt, dass die Kopfzone mittig darin liegt, und
+auf den gueltigen Bereich begrenzt. Passt die Kopfzone nicht hinein,
+meldet das Skript es.
+
+## Was `build.mjs` beim Rendern prueft
+
+Jeder Fall wird gemeldet:
+
+1. Passt der Inhalt in die Flaeche, oder laeuft er ueber?
+2. Bleibt der Stellentitel einzeilig?
+3. Passen die Koepfe vollstaendig in den Bildausschnitt?
+
 ## Grundsaetze
 
-* Es wird **ausschliesslich** das Bildmaterial aus `bilder/` verwendet.
+* Es wird **ausschliesslich** das Bildmaterial aus `bilder/` verwendet,
+  und zwar die web-optimierten Fassungen aus `bilder/web/`.
 * Das **Original-Logo bleibt unveraendert** – nicht nachgebaut, nicht neu
   gezeichnet, nicht eingefaerbt, Seitenverhaeltnis unberuehrt. Es bringt
   einen weissen Hintergrund mit; auf dunklen Flaechen sitzt es deshalb auf
-  einer weissen Karte, auf dem Profilbild auf reinweissem Grund.
+  einer weissen Karte.
 * Farben exakt aus dem Logo: Teal `#008C8D`, Blau `#004D91`.
-* Der Firmenwagen ist in jedem Konzept vertreten: bei `benefit` als
-  zweite Headline-Zeile, bei `beruf` als eigener Benefit-Block mit Icon
-  (inklusive Firmenhandy und Firmentablet), bei `wechsel` als Chip.
-* `build.mjs` prueft beim Rendern dreierlei und meldet jeden Fall: ob der
-  Inhalt in die Flaeche passt, ob der Stellentitel einzeilig bleibt und ob
-  das Foto mindestens 240 px hoch ist. Letzteres faengt ab, dass das Bild
-  bei viel Text zu einem unleserlichen Streifen zusammenschrumpft.
-* Das Bild nimmt uebrigen Platz auf (`flex:1 1 var(--media)`). Dadurch sitzt
-  der Abschluss in jedem Format und bei jeder Headline-Laenge gleich tief,
-  statt dass unten Leerraum entsteht.
-
-## Bildzuordnung
-
-| Konzept | Foto |
-|---------|------|
-| `benefit` | `web/hero-team.jpg` – Team vor dem Betrieb, Fahrzeuge im Hintergrund |
-| `beruf` | `web/stelle-planung.jpg` – Projektbesprechung mit Plan und Tablet |
-| `wechsel` | `web/team-zusammenhalt.jpg` – Team, Zusammenhalt |
-| Facebook-Titelbild | `web/hero-team.jpg` |
-
-Alles echte Betriebsfotos. Das frueher genutzte Mustermotiv
-(`Vorschau_Muster_Kundendienstmonteur.jpg`, 530 x 354 px) wird nicht mehr
-verwendet – damit entfaellt auch die offene Lizenzfrage.
+* In jeder Variante ist „Projektleiter (m/w/d)" das groesste Element.
