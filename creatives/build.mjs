@@ -18,8 +18,13 @@ const out  = here;
 const dataUri = (rel, mime) =>
   `data:${mime};base64,` + fs.readFileSync(path.join(root, rel)).toString('base64');
 const LOGO    = dataUri('bilder/buh_logo.png.webp', 'image/webp');
-const HAUS    = dataUri('bilder/csm_Kaltmaier_Metzingen-gebaeude_68f07057f5.jpg', 'image/jpeg');
-const MONTEUR = dataUri('bilder/Vorschau_Muster_Kundendienstmonteur.jpg', 'image/jpeg');
+/* Echte Betriebsfotos. Verwendet werden die web-optimierten Fassungen aus
+   bilder/web/ - bei 1080 px Ausgabebreite reichen sie voellig und halten
+   die Base64-Einbettung klein. Das frueher genutzte Musterbild
+   (Vorschau_Muster_Kundendienstmonteur.jpg) wird nicht mehr gebraucht. */
+const TEAM    = dataUri('bilder/web/hero-team.jpg',         'image/jpeg');
+const PLANUNG = dataUri('bilder/web/stelle-planung.jpg',    'image/jpeg');
+const ZUSAMMEN= dataUri('bilder/web/team-zusammenhalt.jpg', 'image/jpeg');
 
 /* CI – exakt aus dem Original-Logo ausgelesen */
 const C = {
@@ -123,7 +128,7 @@ const KONZEPTE = {
         <span class="chip">Urlaubs- &amp; Weihnachtsgeld</span>
       </div>
     </div>
-    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${HAUS}" alt=""></div>
+    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${TEAM}" style="object-position:center 58%" alt=""></div>
     <div class="pad">${cta('Jetzt bewerben','In unter 60 Sekunden &middot; ohne Lebenslauf')}</div>
     <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`,
 
@@ -146,7 +151,7 @@ const KONZEPTE = {
       </div>
     </div>
     <div style="margin-top:var(--stack-gap)">${perkAuto}</div>
-    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${MONTEUR}" style="object-position:center 42%" alt=""></div>
+    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${PLANUNG}" style="object-position:center 45%" alt=""></div>
     <div class="pad">${cta('Jetzt bewerben','Vier kurze Fragen &middot; kein Anschreiben')}</div>
     <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`,
 
@@ -166,7 +171,7 @@ const KONZEPTE = {
         <span class="chip">Junges Team</span>
       </div>
     </div>
-    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${HAUS}" style="object-position:62% center" alt=""></div>
+    <div class="media" style="margin:var(--media-top) var(--pad) var(--media-bot)"><img src="${ZUSAMMEN}" style="object-position:center 48%" alt=""></div>
     <div class="pad">${cta('Jetzt bewerben','Ohne Lebenslauf &middot; wir melden uns pers&ouml;nlich')}</div>
     <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`
 };
@@ -189,7 +194,7 @@ function fbProfil(){
 function fbTitel(){
   /* 1640 x 856, Sicherheitszone 1092 x 616 mittig, unten rechts frei */
   return `<div class="canvas" style="width:1640px;height:856px;--u:20px;--pad:0;--gap:0;justify-content:center">
-    <img src="${HAUS}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:68% center">
+    <img src="${TEAM}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 52%">
     <div style="position:absolute;inset:0;background:linear-gradient(95deg,rgba(0,36,64,.97) 0%,rgba(0,36,64,.95) 54%,rgba(0,49,92,.62) 76%,rgba(0,49,92,.20) 100%)"></div>
     <div style="position:relative;z-index:2;width:1092px;margin:0 auto;display:flex;flex-direction:column;gap:30px">
       <div style="display:flex;align-items:center;gap:24px">

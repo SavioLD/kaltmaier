@@ -21,6 +21,7 @@ Die Seite ist eine einzige, eigenständige Datei: **`index.html`**
 | 6 | Benefits | 6 Karten |
 | 7 | Ablauf | 3 Schritte |
 | 8 | Mid-CTA | Zwischen-Handlungsaufruf |
+| 8b | Einblicke | Bildstrecke: Team, Technik, Badausstellung, Betrieb |
 | 9 | Bewerbung | Mehrstufiges Formular (6 Schritte) |
 | 10 | FAQ | 6 Fragen |
 | 11 | Footer | Kontakt, Rechtliches |
@@ -147,29 +148,33 @@ Firmendaten (Adresse, Telefon, E-Mail, Rechts-Links) stehen gebündelt im
 
 ## 6 · Bildmaterial
 
-Im Repo liegen:
+Im Repo liegen sechs echte Betriebsfotos plus das Original-Logo. Die
+Fotos sind rund 6000 px breit und 4–7 MB gross; eingebunden werden
+web-optimierte Fassungen aus `bilder/web/` (zusammen rund 1 MB).
 
-| Datei | Verwendung |
-|-------|------------|
-| `bilder/buh_logo.png.webp` | Original-Logo, in Topbar, Hero und Footer eingebunden |
-| `bilder/csm_Kaltmaier_Metzingen-gebaeude_68f07057f5.jpg` | Hero-Hintergrund (Betriebsgebaeude Metzingen) |
-| `bilder/Vorschau_Muster_Kundendienstmonteur.jpg` | Reserve, 530 x 354 px |
+| Web-Fassung | Breite | Verwendung |
+|-------------|--------|------------|
+| `hero-team.jpg` | 2000 px | Hero der Karriereseite, Creative `benefit`, Facebook-Titelbild |
+| `stelle-planung.jpg` | 1400 px | Kopf der Stellenkarte, Creative `beruf` |
+| `team-zusammenhalt.jpg` | 1400 px | Einblicke (gross), Creative `wechsel` |
+| `technik-anlage.jpg` | 1100 px | Einblicke |
+| `beratung-bad.jpg` | 1100 px | Einblicke |
+| `betrieb-gebaeude.jpg` | 1600 px | Einblicke |
+
+Neu erzeugen nach einem Austausch: `python3 bilder/optimieren.py`
+
+Ausser dem Hero laedt jedes Bild verzoegert (`loading="lazy"`), und jedes
+`img` traegt `width`/`height`, damit beim Nachladen nichts springt.
 
 **Das Logo wird unveraendert verwendet** – nicht nachgebaut, nicht neu
 gezeichnet, nicht eingefaerbt, Seitenverhaeltnis unberuehrt. Da der
 Schriftzug schwarz ist, sitzt es auf einer weissen Flaeche; daneben steht
 „Kaltmaier" als Text, genau wie auf Fahrzeugen und Gebaeude.
 
-**Hero-Darstellung:** Am Desktop liegt das Foto als Vollflaeche hinter dem
-Text. Mobil nicht – das Gebaeudefoto ist ein Querformat (3,4:1), davon waere
-auf einem Hochkant-Display nur ein rund 20 % breiter Streifen zu sehen.
-Mobil bekommt es deshalb ein eigenes Band von 320 px ganz oben im Hero und
-laeuft nach unten weich in den Textbereich aus. Die Abdunklung steckt
-komplett im Stylesheet; das JS setzt nur noch `--hero-photo`, weil ein
-inline gesetztes `background-image` jede Media-Query ueberschreiben wuerde.
+`Vorschau_Muster_Kundendienstmonteur.jpg` war ein Mustermotiv mit
+530 x 354 px und wird seit den echten Fotos nirgends mehr verwendet.
 
 Optionale Ueberschreibungen (greifen automatisch, ohne Code-Aenderung):
 
-* `bilder/logo-kaltmaier-weiss.png` – fertiges Komplettlogo in Weiss,
-  ersetzt dann Logo-Badge + Schriftzug
-* `bilder/hero.jpg` – eigenes Hero-Bild, hat Vorrang vor dem Gebaeudefoto
+* `bilder/logo-kaltmaier-weiss.png` – fertiges Komplettlogo in Weiss
+* `bilder/hero.jpg` – eigenes Hero-Bild, hat Vorrang

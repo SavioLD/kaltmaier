@@ -54,10 +54,15 @@ und die drei Varianten bleiben trotzdem unterscheidbar.
   der Abschluss in jedem Format und bei jeder Headline-Laenge gleich tief,
   statt dass unten Leerraum entsteht.
 
-## Hinweis zum Monteur-Foto
+## Bildzuordnung
 
-`Vorschau_Muster_Kundendienstmonteur.jpg` ist mit 530 x 354 px klein und
-traegt „Vorschau/Muster" im Dateinamen. Es wird in den beiden
-`beruf-`Creatives verwendet und dort hochskaliert. Vor dem Ausspielen
-bitte Lizenz und eine hoeher aufgeloeste Fassung klaeren – idealerweise
-ersetzt durch ein echtes Foto aus dem Betrieb.
+| Konzept | Foto |
+|---------|------|
+| `benefit` | `web/hero-team.jpg` – Team vor dem Betrieb, Fahrzeuge im Hintergrund |
+| `beruf` | `web/stelle-planung.jpg` – Projektbesprechung mit Plan und Tablet |
+| `wechsel` | `web/team-zusammenhalt.jpg` – Team, Zusammenhalt |
+| Facebook-Titelbild | `web/hero-team.jpg` |
+
+Alles echte Betriebsfotos. Das frueher genutzte Mustermotiv
+(`Vorschau_Muster_Kundendienstmonteur.jpg`, 530 x 354 px) wird nicht mehr
+verwendet – damit entfaellt auch die offene Lizenzfrage.

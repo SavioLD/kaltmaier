@@ -105,7 +105,7 @@ img{max-width:100%;display:block}
 /* ---------- HERO ---------- */
 .hero{position:relative;overflow:hidden;background:var(--brand-900);padding:0}
 .hero__media{position:absolute;inset:0;background-color:#002440;background-image:var(--grad);background-size:cover;background-position:center}
-.hero__media.has-photo{background-position:62% center;
+.hero__media.has-photo{background-position:center 38%;
   background-image:linear-gradient(100deg,rgba(0,36,64,.94) 0%,rgba(0,36,64,.86) 50%,rgba(0,49,92,.28) 86%),var(--hero-photo)}
 .hero__media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,36,64,.45),transparent 60%)}
 /* Eigener Stacking-Kontext: sonst ueberdeckt .hero__media den Abdunkler
@@ -145,7 +145,7 @@ img{max-width:100%;display:block}
      erste, was man sieht, ohne zu scrollen.
      ------------------------------------------------------------------- */
   .hero__media.has-photo{
-    inset:0 0 auto 0;height:320px;background-position:44% center;
+    inset:0 0 auto 0;height:340px;background-position:center 34%;
     /* Der letzte Stopp trifft exakt die Farbe, die direkt unter dem Band
        liegt (rgba(0,36,64,.84) ueber --brand-900 = #002645). Dadurch gibt
        es keine sichtbare Kante, das Foto laeuft weich in den Text aus. */
@@ -153,8 +153,8 @@ img{max-width:100%;display:block}
       rgba(0,36,64,.10) 50%,rgba(0,38,69,.42) 72%,rgba(0,38,69,.86) 90%,
       rgba(0,38,69,1) 100%),var(--hero-photo)}
   .hero__media.has-photo::after{background:none}
-  .hero__media.has-photo ~ .shell .hero__panel{padding-top:338px}
-  .hero__media.has-photo ~ .shell .hero__panel::before{top:320px}
+  .hero__media.has-photo ~ .shell .hero__panel{padding-top:358px}
+  .hero__media.has-photo ~ .shell .hero__panel::before{top:340px}
 }
 
 /* ---------- trust band ---------- */
@@ -179,6 +179,11 @@ section[id]{scroll-margin-top:80px}
 .job-grid{display:grid;gap:22px;margin-top:44px;grid-template-columns:minmax(0,740px);justify-content:center}
 .job{position:relative;display:flex;flex-direction:column;width:100%;background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:34px 32px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
 .job:hover{transform:translateY(-5px);border-color:var(--brand);box-shadow:var(--shadow)}
+/* Foto im Kopf der Stellenkarte - zeigt die Projektarbeit selbst. */
+.job__photo{margin:-34px -32px 22px;aspect-ratio:16/7;overflow:hidden;
+  border-radius:var(--radius) var(--radius) 0 0;background:#0a2b47}
+.job__photo img{width:100%;height:100%;object-fit:cover;object-position:center 42%}
+@media(max-width:760px){.job__photo{margin:-26px -20px 18px;aspect-ratio:3/2}}
 .job__icon{width:52px;height:52px;border-radius:13px;display:grid;place-items:center;background:var(--brand-soft);border:1px solid var(--line-strong);margin-bottom:18px}
 .job__icon svg{width:26px;height:26px;stroke:var(--brand-700)}
 .job h3{font-size:24px;margin-bottom:4px}
@@ -206,6 +211,23 @@ section[id]{scroll-margin-top:80px}
 .benefit__ic svg{width:23px;height:23px;stroke:var(--brand-700)}
 .benefit b{font-family:var(--f-display);font-weight:800;font-size:16.5px;display:block;margin-bottom:6px;color:var(--brand-900)}
 .benefit p{font-size:14px;color:var(--ink-soft);font-weight:450}
+
+/* ---------- einblicke ---------- */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.gallery figure{position:relative;margin:0;overflow:hidden;border-radius:var(--radius);
+  background:#0a2b47;border:1.5px solid var(--line)}
+.gallery figure:first-child{grid-column:1/-1;aspect-ratio:21/9}
+.gallery figure:not(:first-child){aspect-ratio:4/3}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:34px 18px 14px;
+  font-size:14px;font-weight:700;color:#fff;
+  background:linear-gradient(180deg,rgba(0,36,64,0) 0%,rgba(0,36,64,.86) 72%)}
+@media(max-width:820px){
+  .gallery{grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+  .gallery figure:first-child{aspect-ratio:16/9}
+  .gallery figcaption{font-size:12.5px;padding:28px 13px 11px}
+}
+@media(max-width:520px){.gallery{grid-template-columns:1fr}}
 
 /* ---------- process ---------- */
 .process{background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -385,6 +407,7 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
     <nav class="topbar__nav" aria-label="Hauptnavigation">
       <a class="navlink" href="#stellen">Offene Stelle</a>
       <a class="navlink" href="#benefits">Warum Kaltmaier</a>
+      <a class="navlink" href="#einblicke">Einblicke</a>
       <a class="navlink" href="#ablauf">Ablauf</a>
       <a class="btn btn--primary btn--sm" href="#formular"><span class="cta-long">Jetzt bewerben</span><span class="cta-short">Bewerben</span></a>
     </nav>
@@ -463,6 +486,37 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
       <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div><b>Abwechslung mit Perspektive</b><p>Kein Projekt gleicht dem anderen – vom kompletten Bad bis zur modernen Heizungsanlage. Ein Arbeitsplatz mit Zukunft.</p></div>
       <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div><b>Umfassende Weiterbildung</b><p>Wir fördern deine Entwicklung mit umfassenden Weiterbildungsangeboten – eine Weiterbildung zum Energieberater ist ausdrücklich willkommen.</p></div>
       <div class="benefit reveal"><div class="benefit__ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><b>Junges Team, moderne Räume</b><p>Ein junges, motiviertes Team und moderne Betriebsräume – kurze Wege, klare Absprachen, gute Stimmung.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EINBLICKE ============ -->
+<section id="einblicke">
+  <div class="shell">
+    <span class="kicker">Einblicke</span>
+    <h2 class="sec-title">So sieht es bei uns aus.</h2>
+    <p class="sec-lead">Kein Stockfoto-Betrieb: Das sind unser Team, unsere Technik und unsere Räume in Metzingen.</p>
+    <div class="gallery">
+      <figure class="reveal">
+        <img src="bilder/web/team-zusammenhalt.jpg" loading="lazy" width="1400" height="933"
+             alt="Das Team von Bad &amp; Heizung Kaltmaier" />
+        <figcaption>Ein Team, das zusammenhält</figcaption>
+      </figure>
+      <figure class="reveal">
+        <img src="bilder/web/technik-anlage.jpg" loading="lazy" width="1100" height="733"
+             alt="Kollege mit Tablet an einer modernen Heizungsanlage" />
+        <figcaption>Moderne Heiztechnik</figcaption>
+      </figure>
+      <figure class="reveal">
+        <img src="bilder/web/beratung-bad.jpg" loading="lazy" width="1100" height="733"
+             alt="Beratung in der Badausstellung" />
+        <figcaption>Eigene Badausstellung</figcaption>
+      </figure>
+      <figure class="reveal">
+        <img src="bilder/web/betrieb-gebaeude.jpg" loading="lazy" width="1600" height="475"
+             alt="Betriebsgebäude von Bad &amp; Heizung Kaltmaier in Metzingen" />
+        <figcaption>Moderne Betriebsräume</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -759,6 +813,8 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
      --------------------------------------------------------------------- */
   document.getElementById("jobGrid").innerHTML =
     '<article class="job reveal" style="text-align:left">'+
+      '<div class="job__photo"><img src="bilder/web/stelle-planung.jpg" loading="lazy" '+
+        'alt="Projektbesprechung bei Bad &amp; Heizung Kaltmaier" width="1400" height="933"></div>'+
       '<div class="job__icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+JOB.icon+'</svg></div>'+
       '<h3>'+esc(JOB.title)+'</h3>'+
       '<p class="job__teaser">'+esc(JOB.teaser)+'</p>'+
@@ -856,13 +912,14 @@ footer{padding:52px 0 36px;background:var(--brand-900);color:#ccd7e2}
 
   /* ---------------------------------------------------------------------
      HERO-BILD
-     Betriebsgebaeude in Metzingen. Liegt eine eigene bilder/hero.jpg vor,
-     hat sie Vorrang.
+     Das Team vor dem Betrieb in Metzingen. Liegt eine eigene
+     bilder/hero.jpg vor, hat sie Vorrang.
      --------------------------------------------------------------------- */
   (function(){
     var el=document.getElementById("heroMedia");
     var cands=["bilder/hero.jpg","bilder/hero.jpeg","bilder/hero.png",
-               "bilder/csm_Kaltmaier_Metzingen-gebaeude_68f07057f5.jpg"], i=0;
+               "bilder/web/hero-team.jpg",
+               "bilder/web/betrieb-gebaeude.jpg"], i=0;
     (function tryNext(){
       if (i>=cands.length) return;
       var url=cands[i++], probe=new Image();
