@@ -92,16 +92,13 @@ const li  = t => `<li>${HAKEN}<span>${t}</span></li>`;
    ===================================================================== */
 const VARIANTEN = {
 
-/* ---- 1 · Fotoblock oben, Inhalt unten auf Blau --------------------- */
-'v1-fotoblock': f => `
-  <div style="position:relative;flex:0 0 ${f.v1Foto};overflow:hidden">
-    ${bild('planung')}
-    <div style="position:absolute;inset:0;background:linear-gradient(180deg,
-      rgba(0,36,64,.62) 0%,rgba(0,36,64,.10) 34%,rgba(0,36,64,.08) 62%,rgba(0,49,92,.92) 100%)"></div>
-    <div style="position:absolute;top:var(--pad);left:var(--pad)">${marke}</div>
-  </div>
-  <div style="flex:1;display:flex;flex-direction:column;gap:var(--gap);padding:0 var(--pad) var(--pad)">
-    <span class="eyebrow" style="margin-top:calc(var(--u)*-.4)"><i></i>Metzingen &middot; Vollzeit &middot; unbefristet</span>
+/* ---- 1 · Fotoblock + Inhaltsblock --------------------------------
+   Hoch und quadratisch: Foto oben, Inhalt darunter.
+   Quer: nebeneinander - gestapelt bliebe vom Foto nur ein Streifen und
+   der Textblock wuerde gequetscht.                                   */
+'v1-fotoblock': f => {
+  const inhalt = `
+    <span class="eyebrow"><i></i>Metzingen &middot; Vollzeit &middot; unbefristet</span>
     ${titel}
     <div class="jobline">F&uuml;hr deine eigenen Projekte.</div>
     <ul class="haken">
@@ -110,31 +107,72 @@ const VARIANTEN = {
       ${li('30 Tage Urlaub, unbefristet')}
     </ul>
     <div style="margin-top:auto">${cta('Jetzt bewerben','In unter 60 Sekunden &middot; ohne Lebenslauf')}</div>
-    <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>
-  </div>`,
+    <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`;
 
-/* ---- 2 · Vollflaechiges Foto, Text unten im Verlauf ---------------- */
-'v2-vollbild': f => `
+  if (f.quer) return `
+    <div style="display:flex;height:100%">
+      <div style="flex:0 0 46%;position:relative;overflow:hidden">
+        ${bild('planung')}
+        <div style="position:absolute;inset:0;background:
+          /* oben abdunkeln, damit die Wortmarke auf dem hellen Buero liest */
+          linear-gradient(180deg,rgba(0,36,64,.74) 0%,rgba(0,36,64,.30) 18%,
+            rgba(0,36,64,0) 38%),
+          linear-gradient(100deg,rgba(0,36,64,.40) 0%,rgba(0,36,64,.06) 38%,
+            rgba(0,36,64,.10) 74%,rgba(0,49,92,.74) 100%)"></div>
+        <div style="position:absolute;top:var(--pad);left:var(--pad)">${marke}</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:var(--gap);padding:var(--pad)">
+        ${inhalt}
+      </div>
+    </div>`;
+
+  return `
+  <div style="position:relative;flex:0 0 ${f.v1Foto};overflow:hidden">
+    ${bild('planung')}
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,
+      rgba(0,36,64,.62) 0%,rgba(0,36,64,.10) 34%,rgba(0,36,64,.08) 62%,rgba(0,49,92,.92) 100%)"></div>
+    <div style="position:absolute;top:var(--pad);left:var(--pad)">${marke}</div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:var(--gap);padding:0 var(--pad) var(--pad)">
+    <span style="margin-top:calc(var(--u)*-.4)"></span>
+    ${inhalt}
+  </div>`;
+},
+
+/* ---- 2 · Vollflaechiges Foto, Text im Verlauf ---------------------
+   Hoch und quadratisch: Text unten. Quer: Text links, sonst stuende er
+   auf einem 628 px hohen Bild in einem viel zu flachen Streifen.     */
+'v2-vollbild': f => {
+  const inhalt = `
+    <span class="eyebrow"><i></i>Wir stellen ein &middot; Metzingen</span>
+    ${titel}
+    <div class="jobline">Firmenwagen &ndash; auch privat.</div>
+    <ul class="haken">
+      ${li('Firmenhandy und Firmentablet dazu')}
+      ${li('30 Tage Urlaub, Urlaubs- und Weihnachtsgeld')}
+      ${li('Unbefristet, mit Weiterbildung')}
+    </ul>
+    ${cta('Jetzt bewerben','Vier kurze Fragen &middot; kein Anschreiben')}
+    <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>`;
+
+  const verlauf = f.quer
+    ? `linear-gradient(95deg,rgba(0,36,64,.96) 0%,rgba(0,36,64,.93) 48%,
+        rgba(0,41,74,.64) 72%,rgba(0,49,92,.22) 100%)`
+    : `linear-gradient(180deg,rgba(0,36,64,.80) 0%,rgba(0,36,64,.30) 22%,
+        rgba(0,36,64,.34) 42%,rgba(0,41,74,.90) 68%,rgba(0,36,64,.97) 100%)`;
+
+  return `
   <div style="position:absolute;inset:0">${bild('team')}</div>
-  <div style="position:absolute;inset:0;background:linear-gradient(180deg,
-    rgba(0,36,64,.80) 0%,rgba(0,36,64,.30) 22%,rgba(0,36,64,.34) 42%,
-    rgba(0,41,74,.90) 68%,rgba(0,36,64,.97) 100%)"></div>
+  <div style="position:absolute;inset:0;background:${verlauf}"></div>
   <div style="position:relative;z-index:2;display:flex;flex-direction:column;
        height:100%;padding:var(--pad)">
     ${marke}
-    <div style="margin-top:auto;display:flex;flex-direction:column;gap:var(--gap)">
-      <span class="eyebrow"><i></i>Wir stellen ein &middot; Metzingen</span>
-      ${titel}
-      <div class="jobline">Firmenwagen &ndash; auch privat.</div>
-      <ul class="haken">
-        ${li('Firmenhandy und Firmentablet dazu')}
-        ${li('30 Tage Urlaub, Urlaubs- und Weihnachtsgeld')}
-        ${li('Unbefristet, mit Weiterbildung')}
-      </ul>
-      ${cta('Jetzt bewerben','Vier kurze Fragen &middot; kein Anschreiben')}
-      <div class="foot">bad &amp; heizung Kaltmaier GmbH &middot; Metzingen</div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:var(--gap);
+         ${f.quer ? 'max-width:58%' : ''}">
+      ${inhalt}
     </div>
-  </div>`,
+  </div>`;
+},
 
 /* ---- 3 · Fakten: Liste und Foto ----------------------------------
    Im Hoch- und Quadratformat stehen Liste und Hochkant-Foto nebeneinander.
@@ -142,23 +180,29 @@ const VARIANTEN = {
    die ganze Hoehe auseinandergezogen - dort liegt das Foto deshalb als
    breites Band unter der Liste.                                      */
 'v3-fakten': f => {
-  const punkte = [
+  /* Im Querformat bleiben bei 628 px Hoehe nur rund 200 px fuer die Liste.
+     Fuenf Punkte laufen dort unter den Button, deshalb vier.            */
+  const alle = [
     'Abschluss als Meister, Techniker oder Ingenieur SHK',
     'Erfahrung und Organisationsgeschick',
     'Freude daran, Monteure anzuleiten',
     'Firmenwagen, auch privat',
     '30 Tage Urlaub &amp; unbefristet'
-  ].map(li).join('');
+  ];
+  const punkte = (f.quer ? alle.filter((_, i) => i !== 1) : alle).map(li).join('');
   const hoch = f.key === '9x16';
   const block = hoch
     ? `<ul class="haken" style="align-content:start">${punkte}</ul>
        <div style="flex:1;min-height:0;border-radius:calc(var(--u)*1.1);overflow:hidden;background:#0a2b47">
          ${bild('technik')}
        </div>`
-    : `<div style="display:flex;gap:calc(var(--u)*1.4);align-items:stretch">
+    : `<div style="display:flex;gap:calc(var(--u)*1.4);align-items:stretch;
+             ${f.quer ? 'flex:1;min-height:0' : ''}">
          <ul class="haken" style="flex:1 1 58%;align-content:start">${punkte}</ul>
-         <div style="flex:0 0 36%;aspect-ratio:3/4;border-radius:calc(var(--u)*1.1);
-              overflow:hidden;background:#0a2b47">${bild('technik')}</div>
+         <div style="flex:0 0 ${f.quer ? '30%' : '36%'};
+              ${f.quer ? 'height:100%' : 'aspect-ratio:3/4'};
+              border-radius:calc(var(--u)*1.1);overflow:hidden;background:#0a2b47"
+              >${bild('technik')}</div>
        </div>`;
   return `
   <div style="display:flex;flex-direction:column;height:100%;padding:var(--pad);gap:var(--gap)">
@@ -205,7 +249,9 @@ const seite = inner => `<!doctype html><html lang="de"><head><meta charset="utf-
 const FORMATE = [
   { key:'1x1',  w:1080, h:1080, u:19, pad:50, h1:88,  gap:17, v1Foto:'43%' },
   { key:'4x5',  w:1080, h:1350, u:20, pad:54, h1:100, gap:21, v1Foto:'51%' },
-  { key:'9x16', w:1080, h:1920, u:22, pad:60, h1:116, gap:27, v1Foto:'57%' }
+  { key:'9x16', w:1080, h:1920, u:22, pad:60, h1:116, gap:27, v1Foto:'57%' },
+  /* Querformat 1,91:1 - Metas Standard fuer die Feed-Querplatzierung */
+  { key:'quer', w:1200, h:628,  u:16, pad:40, h1:64,  gap:13, quer:true }
 ];
 
 /* =====================================================================
@@ -258,10 +304,20 @@ async function render(html, w, h, datei, pruefen = true) {
       const el = document.querySelector('.canvas'), h1 = el.querySelector('h1');
       const zeilen = h1 ? Math.round(h1.getBoundingClientRect().height /
                       parseFloat(getComputedStyle(h1).lineHeight)) : 1;
-      return { soll: el.clientHeight, ist: el.scrollHeight, zeilen };
+      /* Ein Block kann in seinem eigenen Container ueberlaufen, ohne dass
+         die Gesamtflaeche waechst - etwa eine Liste in einem flex:1-Bereich
+         mit overflow:hidden. Genau das wuerde die Flaechenpruefung
+         uebersehen, deshalb jeden Innenbereich einzeln vergleichen. */
+      let innen = null;
+      el.querySelectorAll('.haken, .media').forEach(k => {
+        if (k.scrollHeight > k.clientHeight + 2)
+          innen = { was: k.className || 'block', ist: k.scrollHeight, soll: k.clientHeight };
+      });
+      return { soll: el.clientHeight, ist: el.scrollHeight, zeilen, innen };
     });
     if (c.ist > c.soll) { console.log(`  !! ${datei}: Inhalt ${c.ist}px > Flaeche ${c.soll}px`); warnungen++; }
     if (c.zeilen > 1)   { console.log(`  !! ${datei}: Stellentitel bricht auf ${c.zeilen} Zeilen um`); warnungen++; }
+    if (c.innen)        { console.log(`  !! ${datei}: "${c.innen.was}" laeuft im eigenen Bereich ueber (${c.innen.ist} > ${c.innen.soll}px)`); warnungen++; }
     schnitt.forEach(s => { if (!s.ok) {
       console.log(`  !! ${datei}: Koepfe passen nicht - sichtbar ${(s.sichtbar*100).toFixed(0)}%, noetig ${(s.noetig*100).toFixed(0)}%`);
       warnungen++;

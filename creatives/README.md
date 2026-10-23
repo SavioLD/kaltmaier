@@ -26,6 +26,14 @@ Jede Variante liegt in drei Formaten vor:
 | `-1x1` | 1080 x 1080 | Feed, quadratisch |
 | `-4x5` | 1080 x 1350 | Feed, hoch |
 | `-9x16` | 1080 x 1920 | Story / Reels |
+| `-quer` | 1200 x 628 | Feed quer (1,91:1), Rechte Spalte, Audience Network |
+
+Im Querformat sind `v1` und `v2` anders aufgebaut als im Hoch- und
+Quadratformat: Bei 628 px Hoehe bliebe vom gestapelten Fotoblock nur ein
+Streifen und der Text wuerde gequetscht. `v1` stellt Foto und Inhalt
+deshalb nebeneinander, `v2` setzt den Text nach links statt nach unten.
+`v3` zeigt quer vier statt fuenf Punkte – fuenf laufen bei der Hoehe
+unter den Button.
 
 `v3-fakten` ist als einzige formatabhaengig aufgebaut: in 1:1 und 4:5
 stehen Liste und Hochkant-Foto nebeneinander, in 9:16 liegt das Foto als
@@ -65,8 +73,11 @@ meldet das Skript es.
 Jeder Fall wird gemeldet:
 
 1. Passt der Inhalt in die Flaeche, oder laeuft er ueber?
-2. Bleibt der Stellentitel einzeilig?
-3. Passen die Koepfe vollstaendig in den Bildausschnitt?
+2. Laeuft ein Block in seinem **eigenen** Bereich ueber? Eine Liste in
+   einem `flex:1`-Bereich mit `overflow:hidden` waechst die Gesamtflaeche
+   nicht, verschwindet aber unter dem Button – Punkt 1 uebersieht das.
+3. Bleibt der Stellentitel einzeilig?
+4. Passen die Koepfe vollstaendig in den Bildausschnitt?
 
 ## Grundsaetze
 
